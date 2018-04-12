@@ -88,12 +88,12 @@ public class DialogFlowConversationController {
 			
 			responseRootObject.setSource("cws.openshift.com");
 			
-			FollowupEvent followupEvent = new FollowupEvent();
+			/*FollowupEvent followupEvent = new FollowupEvent();
 			followupEvent.setName("event name");
 			Parameters2 followUpParameters = new Parameters2();
 			followUpParameters.setParam("param value");
 			followupEvent.setParameters(followUpParameters);
-			responseRootObject.setFollowupEvent(followupEvent);
+			responseRootObject.setFollowupEvent(followupEvent);*/
 			
 			System.out.println("<========= Output JSON is :"
 					+ gson.toJson(responseRootObject) + "================>");
