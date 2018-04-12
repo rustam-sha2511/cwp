@@ -25,6 +25,7 @@ import com.cwp.alice.rs.response.dto.ResponseRootObject;
 import com.cwp.alice.rs.response.dto.RichResponse;
 import com.cwp.alice.rs.response.dto.SimpleResponse;
 import com.cwp.alice.rs.response.dto.Slack;
+import com.google.gson.Gson;
 
 @RestController
 public class DialogFlowConversationController {
@@ -35,6 +36,11 @@ public class DialogFlowConversationController {
 			consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseRootObject processCaseCreation(@RequestBody RequestRootObject requestRootObject) {
 		ResponseRootObject responseRootObject = new ResponseRootObject();
+		System.out.println("<======= ============== Entering processCaseCreation method ================== ========>");
+		
+		Gson gson = new Gson();
+		System.out.println("<========= Input JSON is :"
+				+ gson.toJson(requestRootObject) + "================>");
 
 		try {
 			responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
@@ -89,6 +95,8 @@ public class DialogFlowConversationController {
 			followupEvent.setParameters(followUpParameters);
 			responseRootObject.setFollowupEvent(followupEvent);
 			
+			System.out.println("<========= Output JSON is :"
+					+ gson.toJson(responseRootObject) + "================>");
 			logger.error("Successfully created object");
 			
 		} catch (Exception e) {
