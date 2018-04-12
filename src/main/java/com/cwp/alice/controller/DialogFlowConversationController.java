@@ -76,7 +76,7 @@ public class DialogFlowConversationController {
 			data.setSlack(slack);
 			responseRootObject.setData(data);
 			
-			ArrayList<ContextOut> listOfContextOuts = new ArrayList<>();
+			/*ArrayList<ContextOut> listOfContextOuts = new ArrayList<>();
 			ContextOut contextOut = new ContextOut();
 			contextOut.setName("NewContext");
 			contextOut.setLifespan(5);
@@ -84,7 +84,7 @@ public class DialogFlowConversationController {
 			parameters.setParam("param value");
 			contextOut.setParameters(parameters);
 			listOfContextOuts.add(contextOut);
-			responseRootObject.setContextOut(listOfContextOuts);
+			responseRootObject.setContextOut(listOfContextOuts);*/
 			
 			responseRootObject.setSource("cws.openshift.com");
 			
