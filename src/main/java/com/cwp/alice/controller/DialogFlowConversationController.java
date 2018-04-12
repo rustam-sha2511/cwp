@@ -78,7 +78,7 @@ public class DialogFlowConversationController {
 			
 			ArrayList<ContextOut> listOfContextOuts = new ArrayList<>();
 			ContextOut contextOut = new ContextOut();
-			contextOut.setName("context name");
+			contextOut.setName("NewContext");
 			contextOut.setLifespan(5);
 			Parameters parameters = new Parameters();
 			parameters.setParam("param value");
