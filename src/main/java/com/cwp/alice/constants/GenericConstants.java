@@ -51,6 +51,8 @@ public class GenericConstants {
 	public static final String PAGE_CASE_CREATE = "caseCreationPage";
 	public static final String PAGE_APPOINTMENTS = "appointmentsPage";
 	public static final String PAGE_ACCOUNT = "accountDetailsPage";
+	
+	public static final String DIALOGFLOW_CONVERSATION_WEBHOOK = "/serveConversation";
 
 	private GenericConstants() {
 	}
