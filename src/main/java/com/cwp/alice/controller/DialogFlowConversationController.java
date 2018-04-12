@@ -46,7 +46,7 @@ public class DialogFlowConversationController {
 			responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
 			responseRootObject.setDisplayText("this text is displayed visually");
 			
-			Messages messages = new Messages();
+			/*Messages messages = new Messages();
 			messages.setType(1);
 			messages.setTitle("card title");
 			messages.setSubtitle("card text");
@@ -74,7 +74,7 @@ public class DialogFlowConversationController {
 			Slack slack = new Slack();
 			slack.setText("This is a text response for Slack.");
 			data.setSlack(slack);
-			responseRootObject.setData(data);
+			responseRootObject.setData(data);*/
 			
 			/*ArrayList<ContextOut> listOfContextOuts = new ArrayList<>();
 			ContextOut contextOut = new ContextOut();
