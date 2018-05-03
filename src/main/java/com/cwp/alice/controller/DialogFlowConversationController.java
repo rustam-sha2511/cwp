@@ -43,8 +43,16 @@ public class DialogFlowConversationController {
 				+ gson.toJson(requestRootObject) + "================>");
 
 		try {
-			responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
-			responseRootObject.setDisplayText("this text is displayed visually");
+			String intentName = requestRootObject.getResult().getMetadata().getIntentName();
+			System.out.println("<======= Intent Name is :"+intentName);
+			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
+				responseRootObject.setSpeech("Your next appointment is with Amit Kumar for Well-being session at 11:30 in Cafetaria for 30 minutes."
+						+ "\nYou have one more follow up meeting for the day. For details, visit https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
+				responseRootObject.setDisplayText("this text is displayed visually");
+			} else {			
+				responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
+				responseRootObject.setDisplayText("this text is displayed visually");
+			}
 			
 			/*Messages messages = new Messages();
 			messages.setType(1);
