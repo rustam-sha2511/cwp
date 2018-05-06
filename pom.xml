@@ -6,6 +6,13 @@
 	<artifactId>CaseWorkerPortal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
+	<parent>
+		<groupId>ai.api</groupId>
+		<artifactId>libai-base</artifactId>
+		<version>1.6.12</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
 
 	<name>Case Worket Portal Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -210,7 +217,17 @@
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 		</dependency>
-
+		<dependency>
+	  		<groupId>ai.api</groupId>
+	  		<artifactId>libai</artifactId>
+	  		<version>1.6.12</version>
+	  	</dependency>
+	  	<!-- <dependency>
+	        <groupId>javax.servlet</groupId>
+	        <artifactId>javax.servlet-api</artifactId>
+	        <version>3.0.1</version>
+	        <scope>provided</scope>
+	    </dependency> -->
 	</dependencies>
 
 	<build>

@@ -26,6 +26,7 @@ INSERT INTO cw_users
             , role
             , designation
             , department
+			, sessionId
        )
        VALUES
        ('Amit Kumar'
@@ -35,6 +36,7 @@ INSERT INTO cw_users
             , 'Case Analyst'
             , 'Assistant Secretary for Human Services'
             , 'US Health & Human Services'
+			, 'amit_kumar'
        )
 ;
 
@@ -112,7 +114,7 @@ INSERT INTO cw_appointments
             , 'Satoshi Nakamoto'
             , 'All Hands Meet'
             , 'Break-out Area'
-            , '04/16/2018'
+            , '05/04/2018'
             , '5 PM'
             , '30 Minutes'
        )
@@ -132,7 +134,7 @@ INSERT INTO cw_appointments
             , 'Amit Kumar'
             , 'Well-being Session'
             , 'Cafetaria'
-            , '04/16/2018'
+            , '05/04/2018'
             , '11:30 AM'
             , '30 Minutes'
        )
@@ -212,7 +214,7 @@ INSERT INTO cw_appointments
             , 'Satoshi Nakamoto'
             , 'All Hands Meet'
             , 'Break-out Area'
-            , '04/16/2018'
+            , '05/04/2018'
             , '5 PM'
             , '30 Minutes'
        )

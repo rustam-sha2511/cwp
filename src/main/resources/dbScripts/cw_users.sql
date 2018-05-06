@@ -9,4 +9,5 @@ CREATE TABLE cw_users (
   role VARCHAR(100),
   designation VARCHAR(100),
   department VARCHAR(100),
+  sessionId VARCHAR(100)
 );
