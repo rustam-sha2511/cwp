@@ -53,7 +53,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
 			}
 			
-			System.out.println("<======= Input Intent Name is :"+intentName);
+			//System.out.println("<======= Input Intent Name is :"+intentName);
 			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
 				responseRootObject.setSpeech("Your next appointment is with Amit Kumar for Well-being session at 11:30 in Cafetaria for 30 minutes."
 						+ "\nYou have one more follow up meeting for the day. For details, visit https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
@@ -65,8 +65,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 						
 			responseRootObject.setSource("cws.openshift.com");
 			
-			System.out.println("<========= Output JSON is :"
-					+ gson.toJson(responseRootObject) + "================>");
+			//System.out.println("<========= Output JSON is :"
+					//+ gson.toJson(responseRootObject) + "================>");
 			logger.error("Successfully created object");
 			
 		} catch (Exception e) {
@@ -89,7 +89,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			Gson gson = new Gson();
 			response = gson.toJson(aiResponse);
 			//response = aiResponse.getResult().getFulfillment().getSpeech();
-			System.out.println("Returning Speech "+response);
+			//System.out.println("Returning Speech "+response);
 		} catch (AIServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
