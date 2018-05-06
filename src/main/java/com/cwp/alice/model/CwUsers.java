@@ -17,6 +17,7 @@ public class CwUsers {
 	private String role;
 	private String designation;
 	private String department;
+	private String sessionId;
 
 	public Integer getId() {
 		return id;
@@ -80,6 +81,14 @@ public class CwUsers {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }
