@@ -44,6 +44,10 @@
 <script
 	src='${pageContext.request.contextPath}/js/dataTables.responsive.min.js'></script>
 
+<link rel="stylesheet" type="text/css" href="normalize.css" />
+<link rel="stylesheet" type="text/css" href="layout.css" />
+<script type="text/javascript" src="app.js"></script>
+    
 <script>
 	$(document)
 			.ready(
@@ -177,6 +181,52 @@
 			</div>
 		</div>
 	</div>
-
+	<div>
+        <ul class="nav pull-right voice-icon">
+            <li>
+            	<a href="javascript:void(0);" id="voice-icon">
+	                <span class="fa-stack fa-2x">
+		                <i class="fa fa-circle fa-stack-2x"></i>
+		                <i aria-hidden="true" class="fa fa-microphone fa-stack-1x fa-x"></i>
+	            	</span>
+            	</a>
+            </li>
+        </ul>
+    </div>
+    <div id="overlay"></div>
+	<div id="popup">
+	   <div class="app-container">
+		    <div class="app-header"><h1>Alice at your help</h1></div>
+		    <div class="app-content">
+		      <div class="time-indicator"><div class="time-indicator-content">8:20</div><hr /></div>
+		    </div>
+		    <div class="app-footer">
+		      <div class="app-footer-inner">
+		        <div class="mic">
+		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" /></a></div>
+		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
+		        </div>
+		
+		      </div>
+		    </div>
+		  </div>
+	</div>
+    <script type="text/javascript">
+    // Initialize Variables
+    //var closePopup = document.getElementById("popupclose");
+    $(document).ready(function(){
+    	var button = $("#voice-icon");
+    	var overlay = $("#overlay");
+        var popup = $("#popup");
+    	$(button).on('click', function(){
+    		$(overlay).css('display','block');
+            $(popup).css('display','block');
+            var closeIcon = '<i class="fa fa-times-circle-o pull-right"></i>';
+       		//$('.b-agent-demo_header-wrapper').append(closeIcon);
+       		//var myFrame = $(".popupIframe").contents().find('.b-agent-demo_header-wrapper');
+        	//myFrame.html(closeIcon);
+    	});
+    });
+</script>
 </body>
 </html>
