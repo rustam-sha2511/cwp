@@ -45,8 +45,9 @@
 	src='${pageContext.request.contextPath}/js/dataTables.responsive.min.js'></script>
 
 <link rel="stylesheet" type="text/css" href="normalize.css" />
-<link rel="stylesheet" type="text/css" href="layout.css" />
-<script type="text/javascript" src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="layout.css" />
+    <!-- <script type="text/javascript" src="ApiAi.js"></script> -->
+    <script type="text/javascript" src="app.js"></script>
     
 <script>
 	$(document)
