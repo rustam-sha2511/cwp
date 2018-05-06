@@ -120,7 +120,7 @@ public class CaseWorkerPortalDAOImpl implements CaseWorkerPortalDAO {
 	public void updateUser(CwUsers cwUsers) throws GlobalException {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
-		String sql = "UPDATE cw_users SET name=:name, email=:email, role=:role, designation=:designation, department=:department WHERE cw_id=:cwId";
+		String sql = "UPDATE cw_users SET name=:name, email=:email, role=:role, designation=:designation, department=:department, sessionId=:sessionId WHERE cw_id=:cwId";
 
 		namedParameterJdbcTemplate.update(sql, getSqlParameterByCwUserModel(cwUsers), keyHolder);
 	}
@@ -134,6 +134,7 @@ public class CaseWorkerPortalDAOImpl implements CaseWorkerPortalDAO {
 		paramSource.addValue("role", cwUsers.getRole());
 		paramSource.addValue("designation", cwUsers.getDesignation());
 		paramSource.addValue("department", cwUsers.getDepartment());
+		paramSource.addValue("sessionId", cwUsers.getSessionId());
 
 		return paramSource;
 	}
