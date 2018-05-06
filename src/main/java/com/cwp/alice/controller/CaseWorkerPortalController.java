@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +45,15 @@ public class CaseWorkerPortalController {
 		try {
 			String casesJsonObj = cwpServices.getAllCases();
 
+			//Setting JSesssion ID to main user object'
+			String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getDetails()).getSessionId();
+			System.out.println("Session Id is :"+sessionId);
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
+			cwUsers.setSessionId(sessionId);
+			cwpServices.updateAccountDetails(cwUsers);
+			
 			model.addAttribute("casesJsonObj", casesJsonObj);
 			model.addAttribute("welcomeMsg", this.getLoggedInUserAndDate());
 		} catch (Exception e) {

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * @author lugupta
  */
@@ -39,6 +41,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 		mappingJackson2HttpMessageConverter
 				.setSupportedMediaTypes(Arrays.asList(new MediaType("application", "json", UTF8)));
+		mappingJackson2HttpMessageConverter.getObjectMapper().setSerializationInclusion(Include.NON_NULL);
 		converters.add(mappingJackson2HttpMessageConverter);
 		
 		// Place to add other converters ...
