@@ -44,11 +44,14 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		try {
 			String intentName = requestRootObject.getResult().getMetadata().getIntentName();
 			
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
+			//User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			CwUsers cwUsers = cwpServices.findCaseWorkerById(
+					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
 			
 			//Check for fallback intent
-			if(!cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
+			if(null == cwUsers || !cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
+				responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
+				responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
 				System.out.println("Setting fallback intent ...");
 				requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
 			}
@@ -72,7 +75,10 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		} catch (Exception e) {
 			errorLogger.error("Classname: CwpDashboardController. Error in Case Creation: " + e);
 			logger.error("Error in Case Creation: " + e);
-			
+			responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
+			responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
+			requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
+			responseRootObject.setSource("cws.openshift.com");
 		}
 		
 		return responseRootObject;
