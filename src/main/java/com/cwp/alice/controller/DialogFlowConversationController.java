@@ -74,6 +74,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			
 		} catch (Exception e) {
 			errorLogger.error("Classname: CwpDashboardController. Error in Case Creation: " + e);
+			e.printStackTrace();
 			logger.error("Error in Case Creation: " + e.getMessage());
 			responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
 			responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
