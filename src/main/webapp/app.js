@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	});
   }
   
-  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with amit_kumar/abcd"}});
+  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101/abcd"}});
 
   promise
       .then(handleResponse)
