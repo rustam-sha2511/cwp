@@ -50,9 +50,9 @@ public class CaseWorkerPortalController {
 
 			//Setting JSesssion ID to main user object
 			SecureRandom secureRandom = new SecureRandom();
-		    byte[] token = new byte[36];
+		    byte[] token = new byte[19];
 		    secureRandom.nextBytes(token);
-		    String aliceSecretKey = new BigInteger(1, token).toString(36);
+		    String aliceSecretKey = new BigInteger(1, token).toString(19);
 			/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
 					.getDetails()).getSessionId();*/
 			System.out.println("Session Id is :"+aliceSecretKey);
