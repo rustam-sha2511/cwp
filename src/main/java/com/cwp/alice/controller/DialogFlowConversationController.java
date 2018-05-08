@@ -52,7 +52,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
 			
 			//Check for fallback intent
-			if(null == cwUsers || null == cwUsers.getSessionId() ||
+			if(null == cwUsers || null == cwUsers.getSessionId() || null == requestRootObject.getSessionId() ||
 					!cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
 				responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
 				responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
