@@ -3,13 +3,16 @@
  */
 package com.cwp.alice.controller;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Date;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,18 +44,24 @@ public class CaseWorkerPortalController {
 	CaseWorkerPortalService cwpServices;
 
 	@RequestMapping(value = GenericConstants.URL_CW_DASHBOARD, method = RequestMethod.GET)
-	public String showMyDashboard(Model model) {
+	public String showMyDashboard(Model model, HttpSession session) {
 		try {
 			String casesJsonObj = cwpServices.getAllCases();
 
-			//Setting JSesssion ID to main user object'
-			String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getSessionId();
-			System.out.println("Session Id is :"+sessionId);
+			//Setting JSesssion ID to main user object
+			SecureRandom secureRandom = new SecureRandom();
+		    byte[] token = new byte[36];
+		    secureRandom.nextBytes(token);
+		    String aliceSecretKey = new BigInteger(1, token).toString(36);
+			/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getDetails()).getSessionId();*/
+			System.out.println("Session Id is :"+aliceSecretKey);
+			session.setAttribute("aliceSecretKey", aliceSecretKey);
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
-			cwUsers.setSessionId(sessionId);
+			cwUsers.setSessionId(aliceSecretKey);
 			cwpServices.updateAccountDetails(cwUsers);
+			CwUsers cwUsersNew = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
 			
 			model.addAttribute("casesJsonObj", casesJsonObj);
 			model.addAttribute("welcomeMsg", this.getLoggedInUserAndDate());

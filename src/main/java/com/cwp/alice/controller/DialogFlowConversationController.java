@@ -1,6 +1,9 @@
 package com.cwp.alice.controller;
 
+import java.security.SecureRandom;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +52,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
 			
 			//Check for fallback intent
-			if(null == cwUsers || !cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
+			if(null == cwUsers || null == cwUsers.getSessionId() ||
+					!cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
 				responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
 				responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
 				System.out.println("Setting fallback intent ...");
@@ -86,13 +90,15 @@ public class DialogFlowConversationController extends AIServiceServlet{
 	}
 	
 	@RequestMapping(value = "/ai", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String processDialogFlowRequest(HttpServletRequest request) {
+	public @ResponseBody String processDialogFlowRequest(HttpServletRequest request, HttpSession session) {
 		//ResponseRootObject responseRootObject = new ResponseRootObject();
 		AIResponse aiResponse = new AIResponse();
 		String response = "";
 		try {
 			//System.out.println("Val is: "+request.getParameter(DialogFlowConversationController.PARAM_API_AI_KEY));
-			aiResponse = request(request.getParameter("query"), request.getSession());
+			String secretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
+			System.out.println("Alice Secret key is : "+secretKey);
+			aiResponse = request(request.getParameter("query"), secretKey);
 			Gson gson = new Gson();
 			response = gson.toJson(aiResponse);
 			//response = aiResponse.getResult().getFulfillment().getSpeech();
