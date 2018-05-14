@@ -1,6 +1,7 @@
 package com.cwp.alice.controller;
 
-import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cwp.alice.constants.GenericConstants;
+import com.cwp.alice.model.CwAppointments;
 import com.cwp.alice.model.CwUsers;
 import com.cwp.alice.rs.request.dto.RequestRootObject;
 import com.cwp.alice.rs.response.dto.ResponseRootObject;
 import com.cwp.alice.service.CaseWorkerPortalService;
+import com.cwp.alice.service.DialogFlowConversationService;
 import com.google.gson.Gson;
 
 import ai.api.AIServiceException;
@@ -33,6 +34,9 @@ public class DialogFlowConversationController extends AIServiceServlet{
 	
 	@Autowired
 	CaseWorkerPortalService cwpServices;
+	
+	@Autowired
+	DialogFlowConversationService dfcServices;
 		
 	@RequestMapping(value = GenericConstants.DIALOGFLOW_CONVERSATION_WEBHOOK, method = RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -67,14 +71,27 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			
 			//System.out.println("<======= Input Intent Name is :"+intentName);
 			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
-				responseRootObject.setSpeech("Your next appointment is with Amit Kumar for Well-being session at 11:30 in Cafetaria for 30 minutes."
-						+ "\nYou have one more follow up meeting for the day. For details, visit https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
-				responseRootObject.setDisplayText("this text is displayed visually");
-			} else {			
-				responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
-				responseRootObject.setDisplayText("this text is displayed visually");
+				List<CwAppointments> cwAppointments = dfcServices.getCwAppointments(cwUsers.getCwId().toString());
+				
+				if (!cwAppointments.isEmpty()) {
+					StringBuilder sb = new StringBuilder();
+					sb.append("You have " + cwAppointments.size() + " pending for today.");
+
+					for (int i = 1; i <= cwAppointments.size(); i++) {
+						sb.append("\nAppointment" + i + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
+								" at " + cwAppointments.get(i).getTime() + " in " + cwAppointments.get(i).getLocation() + " for " + cwAppointments.get(i).getDuration());
+					}
+					
+					sb.append("\nFor details, visit the My Appointments page. "
+							+ "Link: https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
+					responseRootObject.setSpeech(sb.toString());
+					responseRootObject.setDisplayText(sb.toString());
+				} else {
+					responseRootObject.setSpeech("You do not have any appointments for the day.");
+					responseRootObject.setDisplayText("You do not have any appointments for the day.");
+				}
+				
 			}
-						
 			responseRootObject.setSource("cws.openshift.com");
 			
 			//System.out.println("<========= Output JSON is :"
@@ -114,5 +131,13 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		}
 		
 	    return response;
+	}
+	
+	public static void main(String[] args) {
+		List<String> test = new ArrayList<>();
+		test.add("W");
+		test.add("E");
+		
+		System.out.println(test.size());
 	}
 }
