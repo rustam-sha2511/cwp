@@ -61,6 +61,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
 				System.out.println("Setting fallback intent ...");
 				requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
+				responseRootObject.setSource("cws.openshift.com");
+				return responseRootObject;
 			}
 			
 			//System.out.println("<======= Input Intent Name is :"+intentName);
