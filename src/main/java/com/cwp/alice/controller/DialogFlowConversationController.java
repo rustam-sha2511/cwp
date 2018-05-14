@@ -51,6 +51,9 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(
 					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
 			
+			System.out.println("Users Session ID is :"+cwUsers.getSessionId());
+			System.out.println("Request Root Object Session ID is :"+requestRootObject.getSessionId());
+			
 			//Check for fallback intent
 			if(null == cwUsers || null == cwUsers.getSessionId() || null == requestRootObject.getSessionId() ||
 					!cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
