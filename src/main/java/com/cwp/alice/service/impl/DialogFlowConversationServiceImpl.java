@@ -4,6 +4,7 @@
 package com.cwp.alice.service.impl;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 		List<CwAppointments> filteredAppointments = new ArrayList<>();
 		for (CwAppointments obj : cwAppointmentsList) {
 			LocalTime lt = LocalTime.parse(obj.getTime());
-			if (!obj.getDate().equalsIgnoreCase(todayDate) || !lt.isAfter(LocalTime.now())) {
+			if (!obj.getDate().equalsIgnoreCase(todayDate) || !lt.isAfter(LocalTime.now(ZoneId.of("Asia/Kolkata")))) {
 				filteredAppointments.add(obj);
 			}
 		}
