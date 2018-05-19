@@ -1,6 +1,7 @@
 package com.cwp.alice.controller;
 
-import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cwp.alice.constants.GenericConstants;
+import com.cwp.alice.model.CwAppointments;
+import com.cwp.alice.model.CwCases;
 import com.cwp.alice.model.CwUsers;
 import com.cwp.alice.rs.request.dto.RequestRootObject;
 import com.cwp.alice.rs.response.dto.ResponseRootObject;
 import com.cwp.alice.service.CaseWorkerPortalService;
+import com.cwp.alice.service.DialogFlowConversationService;
 import com.google.gson.Gson;
 
 import ai.api.AIServiceException;
@@ -33,6 +35,9 @@ public class DialogFlowConversationController extends AIServiceServlet{
 	
 	@Autowired
 	CaseWorkerPortalService cwpServices;
+	
+	@Autowired
+	DialogFlowConversationService dfcServices;
 		
 	@RequestMapping(value = GenericConstants.DIALOGFLOW_CONVERSATION_WEBHOOK, method = RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -51,6 +56,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(
 					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
 			
+			System.out.println("uSER OBJ: " + cwUsers.toString());
 			System.out.println("Users Session ID is :"+cwUsers.getSessionId());
 			System.out.println("Request Root Object Session ID is :"+requestRootObject.getSessionId());
 			
@@ -65,16 +71,76 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				return responseRootObject;
 			}
 			
-			//System.out.println("<======= Input Intent Name is :"+intentName);
-			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
-				responseRootObject.setSpeech("Your next appointment is with Amit Kumar for Well-being session at 11:30 in Cafetaria for 30 minutes."
-						+ "\nYou have one more follow up meeting for the day. For details, visit https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
-				responseRootObject.setDisplayText("this text is displayed visually");
-			} else {			
-				responseRootObject.setSpeech("this text is spoken out loud if the platform supports voice interactions");
-				responseRootObject.setDisplayText("this text is displayed visually");
+			//Business Case: 4
+			if(intentName.equalsIgnoreCase("CaseValidationIntent")) {
+				String inputCaseId = "100"; //TO-DO Get case id from ALICE window
+				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
+				
+				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
+					String responseOut = "You do not have permission to open the case " + cwCase.getCwId()
+							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
+					
+					responseRootObject.setSpeech(responseOut);
+					responseRootObject.setDisplayText(responseOut);
+				}
 			}
-						
+			
+			//Business Case: 5
+			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
+				List<CwAppointments> cwAppointments = dfcServices.getCwAppointments(cwUsers.getCwId().toString());
+				
+				if (!cwAppointments.isEmpty()) {
+					StringBuilder sb = new StringBuilder();
+					sb.append("You have " + cwAppointments.size() + " pending for today.");
+
+					for (int i = 1; i <= cwAppointments.size(); i++) {
+						sb.append("\nAppointment" + i + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
+								" at " + cwAppointments.get(i).getTime() + " in " + cwAppointments.get(i).getLocation() + " for " + cwAppointments.get(i).getDuration());
+					}
+					
+					sb.append("\nFor details, visit the My Appointments page. "
+							+ "Link: https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
+					responseRootObject.setSpeech(sb.toString());
+					responseRootObject.setDisplayText(sb.toString());
+				} else {
+					responseRootObject.setSpeech("You do not have any appointments for the day.");
+					responseRootObject.setDisplayText("You do not have any appointments for the day.");
+				}
+				
+			}
+			
+			//Business Case: 6
+			if(intentName.equalsIgnoreCase("CaseCreationIntent")) {
+				String hohName = "Test User"; //TO-DO Get this dynamically from ALICE
+				String noOfAdults = "2";
+				String noOfChildren = "2";
+				String monthlyIncome = "200";
+				String responseOut = dfcServices.createNewCase(cwUsers, hohName, noOfAdults, noOfChildren, monthlyIncome);
+				
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+			
+			//Business Case: 7
+			if(intentName.equalsIgnoreCase("UpdateAccountIntent")) {
+				String updateFieldType = "Email"; //TO-DO Get which field to update. 1 for Email. 2 for Role. 3 for Designation. 4 for Department
+				String updatedFieldValue = "testNew@gmail.com";
+				String responseOut = dfcServices.updateAccountDetails(cwUsers, updateFieldType, updatedFieldValue);
+				
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+			
+			//Business Case: 8
+			if(intentName.equalsIgnoreCase("AppLogoutIntent")) {
+				
+			} else if(intentName.equalsIgnoreCase("DisplayOwnerCaseIntent")){
+				//Business Case: 9
+				responseRootObject.setSpeech("showing cases assigned to you");
+				responseRootObject.setDisplayText("showing cases assigned to "+cwUsers.getName());
+			}
+			
+			
 			responseRootObject.setSource("cws.openshift.com");
 			
 			//System.out.println("<========= Output JSON is :"
@@ -115,4 +181,5 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		
 	    return response;
 	}
+	
 }

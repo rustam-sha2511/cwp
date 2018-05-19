@@ -34,7 +34,7 @@ public class CaseWorkerPortalServiceImpl implements CaseWorkerPortalService {
 	CaseWorkerPortalDAO cwpDAO;
 
 	@Override
-	public String findCaseWorkerById(String cwId) throws GlobalException {
+	public String findCaseWorkerNameById(String cwId) throws GlobalException {
 		return cwpDAO.findCaseWorkerById(Integer.valueOf(cwId)).getName();
 	}
 
