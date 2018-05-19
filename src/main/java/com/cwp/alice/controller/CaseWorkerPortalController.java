@@ -18,11 +18,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cwp.alice.constants.GenericConstants;
+import com.cwp.alice.dto.AliceConversationDetails;
 import com.cwp.alice.form.CaseCreationForm;
 import com.cwp.alice.form.CaseDescriptionForm;
 import com.cwp.alice.model.CwCases;
@@ -43,26 +45,36 @@ public class CaseWorkerPortalController {
 	@Autowired
 	CaseWorkerPortalService cwpServices;
 
-	@RequestMapping(value = GenericConstants.URL_CW_DASHBOARD, method = RequestMethod.GET)
-	public String showMyDashboard(Model model, HttpSession session) {
+	@RequestMapping(value = GenericConstants.URL_CW_DASHBOARD, method = { RequestMethod.GET })
+	public String showMyDashboard(Model model, HttpSession session, 
+				@RequestBody(required=false) AliceConversationDetails aliceConversationDetails) {
 		try {
 			String casesJsonObj = cwpServices.getAllCases();
 
-			//Setting JSesssion ID to main user object
-			SecureRandom secureRandom = new SecureRandom();
-		    byte[] token = new byte[19];
-		    secureRandom.nextBytes(token);
-		    String aliceSecretKey = new BigInteger(1, token).toString(19);
-			/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getSessionId();*/
-			System.out.println("Session Id is :"+aliceSecretKey);
-			session.setAttribute("aliceSecretKey", aliceSecretKey);
+			String aliceSecretKey = null;
+			if( null != aliceConversationDetails) {
+				model.addAttribute("aliceConversationDetails", aliceConversationDetails);
+			}
+			if(null == session.getAttribute("aliceSecretKey")) {
+				//Setting JSesssion ID to main user object
+				SecureRandom secureRandom = new SecureRandom();
+			    byte[] token = new byte[19];
+			    secureRandom.nextBytes(token);
+			    aliceSecretKey = new BigInteger(1, token).toString(19);
+				/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
+						.getDetails()).getSessionId();*/
+				System.out.println("Session Id is :"+aliceSecretKey);
+				session.setAttribute("aliceSecretKey", aliceSecretKey);
+			} else {
+				aliceSecretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
+			}
+			
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
 			cwUsers.setSessionId(aliceSecretKey);
 			cwpServices.updateAccountDetails(cwUsers);
 			CwUsers cwUsersNew = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
-			
+			System.out.println("Cs users is : "+cwUsersNew.toString());
 			model.addAttribute("casesJsonObj", casesJsonObj);
 			model.addAttribute("welcomeMsg", this.getLoggedInUserAndDate());
 		} catch (Exception e) {
