@@ -41,7 +41,7 @@
 <head>
 <body>
 	<div id="mySpinnerBackdrop" class="spinnerBackdrop"></div>
-	<nav class="navbar navbar-inverse">
+	<nav id="navSection" class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -85,7 +85,7 @@
 		</div>
 	</nav>
 	<!-- Container Starts -->
-	<div class="container-fluid" role="main">
+	<div id="mainSection" class="container-fluid" role="main">
 		<div id="mySpinner"></div>
 
 		<div class="col-lg-12 col-md-12 col-sm-12 mrgTop15 emt-conv-err hide"

@@ -18,13 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cwp.alice.constants.GenericConstants;
-import com.cwp.alice.dto.AliceConversationDetails;
 import com.cwp.alice.form.CaseCreationForm;
 import com.cwp.alice.form.CaseDescriptionForm;
 import com.cwp.alice.model.CwCases;
@@ -45,16 +43,14 @@ public class CaseWorkerPortalController {
 	@Autowired
 	CaseWorkerPortalService cwpServices;
 
+	
 	@RequestMapping(value = GenericConstants.URL_CW_DASHBOARD, method = { RequestMethod.GET })
-	public String showMyDashboard(Model model, HttpSession session, 
-				@RequestBody(required=false) AliceConversationDetails aliceConversationDetails) {
+	public String showMyDashboard(Model model, HttpSession session) {
 		try {
 			String casesJsonObj = cwpServices.getAllCases();
 
 			String aliceSecretKey = null;
-			if( null != aliceConversationDetails) {
-				model.addAttribute("aliceConversationDetails", aliceConversationDetails);
-			}
+			
 			if(null == session.getAttribute("aliceSecretKey")) {
 				//Setting JSesssion ID to main user object
 				SecureRandom secureRandom = new SecureRandom();
@@ -71,6 +67,7 @@ public class CaseWorkerPortalController {
 			
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
+			cwUsers.setName("Aloo");
 			cwUsers.setSessionId(aliceSecretKey);
 			cwpServices.updateAccountDetails(cwUsers);
 			CwUsers cwUsersNew = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
@@ -88,7 +85,7 @@ public class CaseWorkerPortalController {
 
 		return GenericConstants.PAGE_DASHBOARD;
 	}
-
+	
 	@RequestMapping(value = "/openCase/{caseId}", method = RequestMethod.GET)
 	public String openCase(@PathVariable String caseId, Model model, RedirectAttributes redir) {
 		try {
@@ -129,7 +126,7 @@ public class CaseWorkerPortalController {
 
 			cdForm.setPt("TANF (Temporary Assistance for Needy Families)");
 			caseCreationForm.setCwId(Integer.valueOf(user.getUsername()));
-			caseCreationForm.setAssignedCwName(cwpServices.findCaseWorkerById(user.getUsername()));
+			caseCreationForm.setAssignedCwName(cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername())).getName());
 			caseCreationForm.setCreateDate(DateUtil.getDateInMMDDYYYYString(new Date()));
 			caseCreationForm.setDescForm(cdForm);
 
@@ -237,7 +234,7 @@ public class CaseWorkerPortalController {
 		try {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			return "Welcome <b>" + cwpServices.findCaseWorkerById(user.getUsername()) + "</b>. " + "\t" + " Logged on: "
+			return "Welcome <b>" + cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername())) + "</b>. " + "\t" + " Logged on: "
 					+ DateUtil.getDayAndDateInString(new Date());
 		} catch (Exception e) {
 			errorLogger.error("Classname: CwpDashboardController. Guest login: " + e);

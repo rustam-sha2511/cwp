@@ -43,7 +43,16 @@
 	src='${pageContext.request.contextPath}/js/dataTables.rowReorder.min.js'></script>
 <script
 	src='${pageContext.request.contextPath}/js/dataTables.responsive.min.js'></script>
+<script
+	src='${pageContext.request.contextPath}/js/factory.js'></script>
+<script
+	src='${pageContext.request.contextPath}/js/findFactory.js'></script>
 
+
+<link rel="stylesheet" type="text/css" href="normalize.css" />
+<link rel="stylesheet" type="text/css" href="layout.css" />
+<script type="text/javascript" src="app.js"></script>
+<script src='${pageContext.request.contextPath}/js/generic.js'></script>
 <script>
 	$(document).ready(function() {
 		$('#mySpinner').addClass('spinner');
@@ -79,7 +88,7 @@
 <head>
 <body class="dashboard-stroke">
 	<div id="mySpinnerBackdrop" class="spinnerBackdrop"></div>
-	<nav class="navbar navbar-inverse">
+	<nav id="navSection" class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -124,7 +133,7 @@
 		</div>
 	</nav>
 	<!-- Container Starts -->
-	<div class="container-fluid" role="main">
+	<div id="mainSection" class="container-fluid" role="main">
 		<div id="mySpinner"></div>
 
 		<div class="col-lg-12 col-md-12 col-sm-12 mrgTop15 emt-conv-err hide"
@@ -159,5 +168,35 @@
 		</div>
 	</div>
 
+	<div>
+        <ul class="nav pull-right voice-icon">
+            <li>
+            	<a href="javascript:void(0);" id="voice-icon">
+	                <span class="fa-stack fa-2x">
+		                <i class="fa fa-circle fa-stack-2x"></i>
+		                <i aria-hidden="true" class="fa fa-microphone fa-stack-1x fa-x"></i>
+	            	</span>
+            	</a>
+            </li>
+        </ul>
+    </div>
+    <div id="overlay"></div>
+	<div id="popup">
+	   <div class="app-container">
+		    <div class="app-header"><h1>Alice at your help</h1></div>
+		    <div class="app-content">
+		      <div class="time-indicator"><div class="time-indicator-content">8:20</div><hr /></div>
+		    </div>
+		    <div class="app-footer">
+		      <div class="app-footer-inner">
+		        <div class="mic">
+		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" /></a></div>
+		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
+		        </div>
+		
+		      </div>
+		    </div>
+		  </div>
+	</div>
 </body>
 </html>
