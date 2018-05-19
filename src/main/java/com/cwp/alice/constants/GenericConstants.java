@@ -33,6 +33,7 @@ public class GenericConstants {
 	public static final String URL_SESSIONEXPIRED = "/sessionExpired";
 	public static final String URL_CW_DASHBOARD = "/cwDashboard";
 	public static final String URL_CW_CASE_CREATE = "/cwCaseCreation";
+	public static final String URL_CONV_ALICE = "/saveAliceConversation";
 	public static final String URL_CW_PROCESS_CASE_CREATE = "/cwCaseCreationProcess";
 	public static final String URL_CW_APPOINTMENT = "/cwAppointment";
 	public static final String URL_CW_ACCOUNT_DETAILS = "/cwAccountDetails";

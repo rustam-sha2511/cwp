@@ -4,61 +4,17 @@
 	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
+<%@include file="includes/headerImport.jsp" %>
 <head>
 <title>Case Worker Portal - My Dashboard</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<link
-	href="${pageContext.request.contextPath}/css/responsive-slider.css"
-	rel="stylesheet" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/animate.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/font-awesome.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/default.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/message.css"
-	media="screen" type="text/css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/dataTables.bootstrap.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/buttons.dataTables.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/rowReorder.dataTables.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/responsive.dataTables.min.css">
-
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script
-	src='${pageContext.request.contextPath}/js/jquery.dataTables.min.js'></script>
-<script
-	src='${pageContext.request.contextPath}/js/dataTables.bootstrap.min.js'></script>
-<script
-	src='${pageContext.request.contextPath}/js/dataTables.buttons.min.js'></script>
-<script
-	src='${pageContext.request.contextPath}/js/dataTables.rowReorder.min.js'></script>
-<script
-	src='${pageContext.request.contextPath}/js/dataTables.responsive.min.js'></script>
-
-<link rel="stylesheet" type="text/css" href="normalize.css" />
-    <link rel="stylesheet" type="text/css" href="layout.css" />
-    <!-- <script type="text/javascript" src="ApiAi.js"></script> -->
-    <script type="text/javascript" src="app.js"></script>
     
 <script>
 	$(document)
 			.ready(
 					function() {
-						$('#mySpinner').addClass('spinner');
-						$('#mySpinnerBackdrop').removeClass('hide');
-						$('#mySpinnerBackdrop').addClass('show');
-
-						var casesJsonObj = JSON.parse('${casesJsonObj}');
-						$('#inputTabularData')
+						AppUtils.showSpinner();
+						populateTable();
+						/*$('#inputTabularData')
 								.DataTable(
 										{
 											processing : true,
@@ -88,18 +44,19 @@
 														"data" : "status"
 													} ],
 											responsive : true
-										});
-
-						$('#mySpinner').removeClass('spinner');
-						$('#mySpinnerBackdrop').removeClass('show');
-						$('#mySpinnerBackdrop').addClass('hide');
-
+										});*/
+						AppUtils.hideSpinner();
 					});
+	
+	function populateTable(){
+		var casesJsonObj = JSON.parse('${casesJsonObj}');
+		AppUtils.triggerCaseTablePopulation(casesJsonObj, '#inputTabularData');
+	}
 </script>
-<head>
+</head>
 <body class="dashboard-stroke">
 	<div id="mySpinnerBackdrop" class="spinnerBackdrop"></div>
-	<nav class="navbar navbar-inverse">
+	<nav id="navSection" class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -144,7 +101,7 @@
 		</div>
 	</nav>
 	<!-- Container Starts -->
-	<div class="container-fluid" role="main">
+	<div id="mainSection" class="container-fluid" role="main">
 		<div id="mySpinner"></div>
 
 		<div class="col-lg-12 col-md-12 col-sm-12 mrgTop15 emt-conv-err hide"
@@ -200,6 +157,19 @@
 		    <div class="app-header"><h1>Alice at your help</h1></div>
 		    <div class="app-content">
 		      <div class="time-indicator"><div class="time-indicator-content">8:20</div><hr /></div>
+		      <c:if test="${ null != aliceConversationDetails }">
+			      <c:forEach items="aliceConversationDetails" var="element">   
+			      	<c:if test="${element.getMessageType().equalsIgnoreCase('TIME_INDICATOR')}">
+			      		<div class="time-indicator"><div class="time-indicator-content">${element.getMessage()}</div><hr /></div>
+			      	</c:if> 
+			      	<c:if test="${element.getMessageType().equalsIgnoreCase('ITEM_BOT')}">
+			      		<div class="item-container item-container-bot"><div class="item"><p>${element.getMessage()}</p></div></div>
+			      	</c:if>
+			      	<c:if test="${element.getMessageType().equalsIgnoreCase('ITEM_USER')}">
+			      		<div class="item-container item-container-user"><div class="item"><p>${element.getMessage()}</p></div></div>
+			      	</c:if>
+				  </c:forEach>
+		      </c:if>
 		    </div>
 		    <div class="app-footer">
 		      <div class="app-footer-inner">
@@ -212,22 +182,5 @@
 		    </div>
 		  </div>
 	</div>
-    <script type="text/javascript">
-    // Initialize Variables
-    //var closePopup = document.getElementById("popupclose");
-    $(document).ready(function(){
-    	var button = $("#voice-icon");
-    	var overlay = $("#overlay");
-        var popup = $("#popup");
-    	$(button).on('click', function(){
-    		$(overlay).css('display','block');
-            $(popup).css('display','block');
-            var closeIcon = '<i class="fa fa-times-circle-o pull-right"></i>';
-       		//$('.b-agent-demo_header-wrapper').append(closeIcon);
-       		//var myFrame = $(".popupIframe").contents().find('.b-agent-demo_header-wrapper');
-        	//myFrame.html(closeIcon);
-    	});
-    });
-</script>
 </body>
 </html>
