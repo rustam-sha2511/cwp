@@ -63,6 +63,8 @@ public class CaseWorkerPortalController {
 			cwpServices.updateAccountDetails(cwUsers);
 			CwUsers cwUsersNew = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
 			
+			System.out.println("uSER OBJ old: " + cwUsers.toString());
+			System.out.println("uSER OBJ new: " + cwUsersNew.toString());
 			model.addAttribute("casesJsonObj", casesJsonObj);
 			model.addAttribute("welcomeMsg", this.getLoggedInUserAndDate());
 		} catch (Exception e) {

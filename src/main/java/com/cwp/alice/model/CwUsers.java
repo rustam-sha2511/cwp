@@ -91,4 +91,11 @@ public class CwUsers {
 		this.sessionId = sessionId;
 	}
 
+	@Override
+	public String toString() {
+		return "CwUsers [id=" + id + ", name=" + name + ", cwId=" + cwId + ", password=" + password + ", email=" + email
+				+ ", role=" + role + ", designation=" + designation + ", department=" + department + ", sessionId="
+				+ sessionId + "]";
+	}
+
 }
