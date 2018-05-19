@@ -29,6 +29,7 @@ public class CwUsersMapper implements RowMapper<CwUsers> {
 		cwUsers.setRole(rs.getString("role"));
 		cwUsers.setDesignation(rs.getString("designation"));
 		cwUsers.setDepartment(rs.getString("department"));
+		cwUsers.setSessionId(rs.getString("sessionId"));
 
 		return cwUsers;
 	}
