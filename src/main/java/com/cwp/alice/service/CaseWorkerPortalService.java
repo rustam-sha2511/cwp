@@ -16,7 +16,7 @@ public interface CaseWorkerPortalService {
 
 	String getAllCases() throws GlobalException, Exception;
 
-	String findCaseWorkerById(String cwId) throws GlobalException;
+	String findCaseWorkerNameById(String cwId) throws GlobalException;
 
 	CwCases getCaseByCaseId(String caseId) throws GlobalException;
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cwp.alice.constants.GenericConstants;
 import com.cwp.alice.model.CwAppointments;
+import com.cwp.alice.model.CwCases;
 import com.cwp.alice.model.CwUsers;
 import com.cwp.alice.rs.request.dto.RequestRootObject;
 import com.cwp.alice.rs.response.dto.ResponseRootObject;
@@ -70,7 +71,21 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				return responseRootObject;
 			}
 			
-			//System.out.println("<======= Input Intent Name is :"+intentName);
+			//Business Case: 4
+			if(intentName.equalsIgnoreCase("CaseValidationIntent")) {
+				String inputCaseId = "100"; //TO-DO Get case id from ALICE window
+				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
+				
+				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
+					String responseOut = "You do not have permission to open the case " + cwCase.getCwId()
+							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
+					
+					responseRootObject.setSpeech(responseOut);
+					responseRootObject.setDisplayText(responseOut);
+				}
+			}
+			
+			//Business Case: 5
 			if(intentName.equalsIgnoreCase("UserAppointmentIntent")) {
 				List<CwAppointments> cwAppointments = dfcServices.getCwAppointments(cwUsers.getCwId().toString());
 				
@@ -93,6 +108,35 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				}
 				
 			}
+			
+			//Business Case: 6
+			if(intentName.equalsIgnoreCase("CaseCreationIntent")) {
+				String hohName = "Test User"; //TO-DO Get this dynamically from ALICE
+				String noOfAdults = "2";
+				String noOfChildren = "2";
+				String monthlyIncome = "200";
+				String responseOut = dfcServices.createNewCase(cwUsers, hohName, noOfAdults, noOfChildren, monthlyIncome);
+				
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+			
+			//Business Case: 7
+			if(intentName.equalsIgnoreCase("UpdateAccountIntent")) {
+				String updateFieldType = "Email"; //TO-DO Get which field to update. 1 for Email. 2 for Role. 3 for Designation. 4 for Department
+				String updatedFieldValue = "testNew@gmail.com";
+				String responseOut = dfcServices.updateAccountDetails(cwUsers, updateFieldType, updatedFieldValue);
+				
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+			
+			//Business Case: 8
+			if(intentName.equalsIgnoreCase("AppLogoutIntent")) {
+				
+			}
+			
+			
 			responseRootObject.setSource("cws.openshift.com");
 			
 			//System.out.println("<========= Output JSON is :"

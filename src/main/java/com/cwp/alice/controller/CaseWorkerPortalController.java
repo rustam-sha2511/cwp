@@ -119,7 +119,7 @@ public class CaseWorkerPortalController {
 
 			cdForm.setPt("TANF (Temporary Assistance for Needy Families)");
 			caseCreationForm.setCwId(Integer.valueOf(user.getUsername()));
-			caseCreationForm.setAssignedCwName(cwpServices.findCaseWorkerById(user.getUsername()));
+			caseCreationForm.setAssignedCwName(cwpServices.findCaseWorkerNameById(user.getUsername()));
 			caseCreationForm.setCreateDate(DateUtil.getDateInMMDDYYYYString(new Date()));
 			caseCreationForm.setDescForm(cdForm);
 
@@ -206,7 +206,7 @@ public class CaseWorkerPortalController {
 	}
 
 	@RequestMapping(value = GenericConstants.URL_CW_PROCESS_ACCOUNT_DETAILS, params = GenericConstants.PARAM_BUTTON_ACCOUNT_UPDATE, method = RequestMethod.POST)
-	public String processCaseCreation(@ModelAttribute("cwUsers") CwUsers cwUsers, Model model, BindingResult result,
+	public String processMyAccount(@ModelAttribute("cwUsers") CwUsers cwUsers, Model model, BindingResult result,
 			RedirectAttributes redir) {
 
 		try {
@@ -227,7 +227,7 @@ public class CaseWorkerPortalController {
 		try {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			return "Welcome <b>" + cwpServices.findCaseWorkerById(user.getUsername()) + "</b>. " + "\t" + " Logged on: "
+			return "Welcome <b>" + cwpServices.findCaseWorkerNameById(user.getUsername()) + "</b>. " + "\t" + " Logged on: "
 					+ DateUtil.getDayAndDateInString(new Date());
 		} catch (Exception e) {
 			errorLogger.error("Classname: CwpDashboardController. Guest login: " + e);
