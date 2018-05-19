@@ -11,7 +11,7 @@ INSERT INTO cw_users
        ('Luv Gupta'
             , 101
             , '$2a$10$RAcfBB1fd7CJd5srLJ7ZdegECOdhuhAkzC.saDentBVjx8otRPvs.'
-            , 'lugupta@deloitte.com'
+            , 'lugupta@abc.com'
             , 'Case Analyst'
             , 'Assistant Secretary for Health'
             , 'US Health & Human Services'
@@ -32,7 +32,7 @@ INSERT INTO cw_users
        ('Amit Kumar'
             , 102
             , '$2a$10$.suLp/nK2wFDmw/0IcpyTe.naDmstgzf5jO6OXlYV5nc.QFJJXnsO'
-            , 'amitkumar466@deloitte.com'
+            , 'amitkumar466@abc.com'
             , 'Case Analyst'
             , 'Assistant Secretary for Human Services'
             , 'US Health & Human Services'
