@@ -57,7 +57,7 @@ INSERT INTO cw_appointments
             , 'Daily Sprint Status Call'
             , 'T1F Meeting Room Delhi'
             , '05/20/2018'
-            , '15:00'
+            , '19:00'
             , '30 Minutes'
        )
 ;
@@ -77,7 +77,7 @@ INSERT INTO cw_appointments
             , 'Firm Initiative'
             , 'Skype'
             , '05/20/2018'
-            , '18:00'
+            , '20:00'
             , '1 Hour'
        )
 ;
@@ -97,7 +97,7 @@ INSERT INTO cw_appointments
             , 'Daily Client Call'
             , 'Skype'
             , '05/20/2018'
-            , '18:00'
+            , '20:00'
             , '30 Minutes'
        )
 ;
