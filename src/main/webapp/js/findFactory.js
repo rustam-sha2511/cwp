@@ -27,7 +27,7 @@ var findFactory = (function () {
 	
     return {		
         extractInfo: function (msg) {
-			var customCaseFilterSet = ['filtering results for case worker '];
+			var customCaseFilterSet = ['filtering results for case worker ','filtering results for case '];
 			var ownerCaseFilterSet = ['showing cases assigned to '];
 			var caseDisplaySet = ['displaying case '];
 			var viewAppointmentSet = ['view all my appointments for today'];
