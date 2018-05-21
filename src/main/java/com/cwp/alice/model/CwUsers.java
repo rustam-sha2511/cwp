@@ -97,9 +97,5 @@ public class CwUsers {
 				+ ", role=" + role + ", designation=" + designation + ", department=" + department + ", sessionId="
 				+ sessionId + "]";
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> refs/remotes/origin/master
 
 }
