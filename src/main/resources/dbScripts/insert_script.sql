@@ -56,8 +56,8 @@ INSERT INTO cw_appointments
             , 'Kevin Mitnick'
             , 'Daily Sprint Status Call'
             , 'T1F Meeting Room Delhi'
-            , '05/22/2018'
-            , '19:00'
+            , '05/21/2018'
+            , '23:00'
             , '30 Minutes'
        )
 ;
