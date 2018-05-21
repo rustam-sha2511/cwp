@@ -17,6 +17,7 @@ public class GenericConstants {
 	public static final String SDF_MM_DD_YYYY_HH_MM = "MM/dd/yyyy HH:mm";
 	public static final String SDF_E_MM_DD_YYYY = "EEEE, MM/dd/yyyy";
 	public static final String SDF_MM_DD_YYYY = "MM/dd/yyyy";
+	public static final String SDF_HH_MM_A = "hh:mm a";
 	public static final int MAX_SESSIONS = 1;
 	public static final String STRING_VAL_MESSAGE = "message";
 	public static final String STRING_VALUE_RESULT = "result";
@@ -52,7 +53,7 @@ public class GenericConstants {
 	public static final String PAGE_CASE_CREATE = "caseCreationPage";
 	public static final String PAGE_APPOINTMENTS = "appointmentsPage";
 	public static final String PAGE_ACCOUNT = "accountDetailsPage";
-	
+
 	public static final String DIALOGFLOW_CONVERSATION_WEBHOOK = "/serveConversation";
 
 	private GenericConstants() {

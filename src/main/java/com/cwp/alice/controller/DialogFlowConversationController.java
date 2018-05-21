@@ -91,6 +91,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				
 				if (!cwAppointments.isEmpty()) {
 					StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 					sb.append("You have " + cwAppointments.size() + " pending for today.");
 
 					for (int i = 1; i <= cwAppointments.size(); i++) {
@@ -100,6 +101,16 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					
 					sb.append("\nFor details, visit the My Appointments page. "
 							+ "Link: https://case-worker-portal-alice.7e14.starter-us-west-2.openshiftapps.com/CaseWorkerPortal/cwAppointment");
+=======
+					sb.append("You have " + cwAppointments.size() + " appointments pending for today.");
+
+					for (int i = 0; i < cwAppointments.size(); i++) {
+						sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + ". The meeting agenda is " + cwAppointments.get(i).getSubject() + 
+								" . Meeting start time is " + cwAppointments.get(i).getTime() + " and the duration of the meeting is for " + cwAppointments.get(i).getDuration());
+					}
+					
+					sb.append("\nFor details, visit the My Appointments page");
+>>>>>>> refs/remotes/origin/master
 					responseRootObject.setSpeech(sb.toString());
 					responseRootObject.setDisplayText(sb.toString());
 				} else {
