@@ -20,6 +20,7 @@ import com.cwp.alice.dto.AliceConversationDetails;
 import com.cwp.alice.model.CwAppointments;
 import com.cwp.alice.model.CwCases;
 import com.cwp.alice.model.CwUsers;
+import com.cwp.alice.rs.request.dto.Context;
 import com.cwp.alice.rs.request.dto.RequestRootObject;
 import com.cwp.alice.rs.response.dto.ResponseRootObject;
 import com.cwp.alice.service.CaseWorkerPortalService;
@@ -70,10 +71,20 @@ public class DialogFlowConversationController extends AIServiceServlet{
 
 		try {
 			String intentName = requestRootObject.getResult().getMetadata().getIntentName();
+			String userId = null;
+			String cwPwd = null;
+			String caseId = null;
+			for(Context contextObj: requestRootObject.getResult().getContexts()) {
+				if(contextObj.getName().equalsIgnoreCase("usercontext")) {
+					userId = contextObj.getParameters().getUser_id();
+					cwPwd = contextObj.getParameters().getCw_pwd();
+					break;
+				}
+			}
+			
 			
 			//User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			CwUsers cwUsers = cwpServices.findCaseWorkerById(
-					Integer.valueOf(requestRootObject.getResult().getParameters().getUser_id()));
+			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(userId));
 			
 			System.out.println("uSER OBJ: " + cwUsers.toString());
 			System.out.println("Users Session ID is :"+cwUsers.getSessionId());
