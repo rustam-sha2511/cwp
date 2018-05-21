@@ -56,7 +56,7 @@ INSERT INTO cw_appointments
             , 'Kevin Mitnick'
             , 'Daily Sprint Status Call'
             , 'T1F Meeting Room Delhi'
-            , '05/20/2018'
+            , '05/22/2018'
             , '19:00'
             , '30 Minutes'
        )
@@ -76,7 +76,7 @@ INSERT INTO cw_appointments
             , 'Joe Gatto'
             , 'Firm Initiative'
             , 'Skype'
-            , '05/20/2018'
+            , '05/22/2018'
             , '20:00'
             , '1 Hour'
        )
@@ -96,7 +96,7 @@ INSERT INTO cw_appointments
             , 'James Murray'
             , 'Daily Client Call'
             , 'Skype'
-            , '05/20/2018'
+            , '05/22/2018'
             , '20:00'
             , '30 Minutes'
        )
