@@ -39,14 +39,14 @@ function fetchChatBotHistory(){
 		console.log( index + " User: " + $( this ).text() );
 		item = {};
         item ["message"] = $( this ).text();
-        item ["messageType"] = "TIME_INDICATOR";
+        item ["messageType"] = "ITEM_USER";
         item ["messageDataType"] = "TEXT";
         currentConvObj.push(item);
 	  } else if($(this).hasClass('time-indicator')){
 		console.log( index + " Time: " + $( this ).text() );
 		item = {};
         item ["message"] = $( this ).text();
-        item ["messageType"] = "ITEM_USER";
+        item ["messageType"] = "TIME_INDICATOR";
         item ["messageDataType"] = "DATE";
         currentConvObj.push(item);
 	  }				  
@@ -66,11 +66,15 @@ var CustomCaseFilter = function () {
 				contentType:"application/json"
 			})
 			.done(function( msg ) {
+				alert('success when alice conversation object created');
 				console.log("success when alice conversation object created");
 				window.location.href = '/CaseWorkerPortal/cwDashboard';
-				
-				
 			});
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for display custom case filter logic');
+			$('#inputTabularData_filter input[type="search"]').val(actingObject).triggerHandler('keyup');
+			return true;
 		}
     }
 };
@@ -97,6 +101,11 @@ var OwnerCaseFilter = function () {
 					$('#inputTabularData_filter input[type="search"]').val(actingObject).triggerHandler('keydown');
 				});*/
 			});
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for display owner case filter logic');
+			$('#inputTabularData_filter input[type="search"]').val(actingObject).triggerHandler('keyup');
+			return true;
 		}
     }
 };
@@ -147,7 +156,15 @@ var ViewAppointmentsFilter = function () {
 function runAliceCommand(command) {
     var factory = new Factory();
 	var factoryInfo = findFactory.extractInfo(command);
-	factory.createObject(factoryInfo.objName).execute();
+	factory.createObject(factoryInfo.objName).execute(factoryInfo.objValue);
+    
+}
+
+//Trigger ALICE filter command for UI 
+function runAliceFilterCommand(command) {
+    var factory = new Factory();
+	var factoryInfo = findFactory.extractInfo(command);
+	factory.createObject(factoryInfo.objName).filter(factoryInfo.objValue);
     
 }
 
