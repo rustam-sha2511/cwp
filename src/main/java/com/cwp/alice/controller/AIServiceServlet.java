@@ -129,6 +129,10 @@ public class AIServiceServlet implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		aiDataService = new AIDataService(new AIConfiguration("13f191c473134f38a31d4232ca319f9b"));
+		//Amit Dialogflow
+		//aiDataService = new AIDataService(new AIConfiguration("13f191c473134f38a31d4232ca319f9b"));
+		
+		//Luv Dialogflow
+		aiDataService = new AIDataService(new AIConfiguration("5f3b8d709f2242c6bef33649d92ac580"));
 	}
 }
