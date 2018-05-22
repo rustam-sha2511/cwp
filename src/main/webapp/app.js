@@ -63,8 +63,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //   console.log('api ' + api + " and if browser has it: " + (api in window));
   // }
 
-  displayCurrentTime();
-
   // check for Chrome
   if (!isChrome()) {
     addError("This demo only works in Google Chrome.");
@@ -81,23 +79,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return;
   }
 
-  // Now we’ve established that the browser is Chrome with proper speech API-s.
-
-  // api.ai client
-  //const apiClient = new ApiAi.ApiAiClient({accessToken: '13f191c473134f38a31d4232ca319f9b'});
-
-  // Initial feedback message.
-  addBotItem("Hi! I’m Alice. Logging you in ...");
-  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
+  
   function handleResponse(serverResponse) {
 
       // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
       var timer = window.setTimeout(function() { startListening(); }, 5000);
       var jsonServerResponse = JSON.parse(serverResponse);
       
-      const speech = jsonServerResponse["result"]["fulfillment"]["speech"];
+      const speech = (jsonServerResponse["result"]["fulfillment"]["speech"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["speech"];
+      const displayText = (jsonServerResponse["result"]["fulfillment"]["displayText"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["displayText"];
+      
       var msg = new SpeechSynthesisUtterance(speech);
-      addBotItem(speech);
+      addBotItem(displayText);
+      runAliceCommand(displayText);
       /*ga('send', 'event', 'Message', 'add', 'bot');*/
       msg.addEventListener("end", function(ev) {
         window.clearTimeout(timer);
@@ -120,52 +114,80 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	});
   }
   
-  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101/abcd"}});
-
-  promise
-      .then(handleResponse)
-      .catch(handleError);
-
-  var recognition = new webkitSpeechRecognition();
-  var recognizedText = null;
-  recognition.continuous = false;
-  recognition.onstart = function() {
-    recognizedText = null;
-  };
-  recognition.onresult = function(ev) {
-    recognizedText = ev["results"][0][0]["transcript"];
-
-    addUserItem(recognizedText);
-    /*ga('send', 'event', 'Message', 'add', 'user');*/
-
-    //let promise = apiClient.textRequest(recognizedText);
-    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
-
-    promise
-        .then(handleResponse)
-        .catch(handleError);
-
-    
-  };
-
-  recognition.onerror = function(ev) {
-    console.log("Speech recognition error", ev);
-  };
-  recognition.onend = function() {
-    gotoReadyState();
-  };
-
+  const timeIndicatorContent = document.querySelector(".time-indicator-content").innerHTML;
+  if(timeIndicatorContent === undefined || timeIndicatorContent === ""){
+	  displayCurrentTime();
+	  //Now we’ve established that the browser is Chrome with proper speech API-s.
+	
+	  // api.ai client
+	  //const apiClient = new ApiAi.ApiAiClient({accessToken: '13f191c473134f38a31d4232ca319f9b'});
+	
+	  // Initial feedback message.
+	  addBotItem("Hi! I’m Alice. Logging you in ...");
+	  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
+	  
+	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101/abcd"}});
+	
+	  promise
+	      .then(handleResponse)
+	      .catch(handleError);
+	
+	  var recognition = new webkitSpeechRecognition();
+	  var recognizedText = null;
+	  recognition.continuous = false;
+	  recognition.onstart = function() {
+	    recognizedText = null;
+	  };
+	  recognition.onresult = function(ev) {
+	    recognizedText = ev["results"][0][0]["transcript"];
+	
+	    addUserItem(recognizedText);
+	    /*ga('send', 'event', 'Message', 'add', 'user');*/
+	
+	    //let promise = apiClient.textRequest(recognizedText);
+	    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
+	
+	    promise
+	        .then(handleResponse)
+	        .catch(handleError);
+	
+	    
+	  };
+	
+	  recognition.onerror = function(ev) {
+	    console.log("Speech recognition error", ev);
+	  };
+	  recognition.onend = function() {
+	    gotoReadyState();
+	  };
+  } else{
+	  var result = runAliceFilterCommand($('.item-container:last .item').text());
+	  console.log('result is: '+result);
+	  addBotItem('Your filtered result is ready.');
+  }
+  
   function startListening() {
     gotoListeningState();
     recognition.start();
   }
 
   const startButton = document.querySelector("#start");
-  startButton.addEventListener("click", function(ev) {
-    /*ga('send', 'event', 'Button', 'click');*/
+  /*startButton.addEventListener("click", function(ev) {
+    ga('send', 'event', 'Button', 'click');
     startListening();
     ev.preventDefault();
+  });*/
+  
+  $("#transcriptButton").on("click", function(){
+	 var dummyText = $('#transcript').val();
+	 addUserItem(dummyText);
+	 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
+
+	    promise
+	        .then(handleResponse)
+	        .catch(handleError);
   });
+  
 
   // Esc key handler - cancel listening if pressed
   // http://stackoverflow.com/questions/3369593/how-to-detect-escape-key-press-with-javascript-or-jquery
