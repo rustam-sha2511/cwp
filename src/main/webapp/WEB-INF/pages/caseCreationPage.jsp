@@ -6,25 +6,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
+<%@include file="includes/headerImport.jsp" %>
 <head>
 <title>Case Worker Portal - Add New Case</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/animate.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/font-awesome.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/default.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/message.css"
-	media="screen" type="text/css" />
-
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -238,6 +222,58 @@
 
 			</div>
 		</div>
+	</div>
+	
+	<div>
+        <ul class="nav pull-right voice-icon">
+            <li>
+            	<a href="javascript:void(0);" id="voice-icon">
+	                <span class="fa-stack fa-2x">
+		                <i class="fa fa-circle fa-stack-2x"></i>
+		                <i aria-hidden="true" class="fa fa-microphone fa-stack-1x fa-x"></i>
+	            	</span>
+            	</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div id="overlay"></div>
+	<div id="popup">
+	   <div class="app-container">
+		   <div class="app-header"><h1>Alice at your help</h1></div>
+		   <div class="app-content">
+		   	  <c:if test="${ null == aliceConversationDetails }">
+		      	<div class="time-indicator"><div class="time-indicator-content"></div><hr /></div>
+		      </c:if>
+		      <c:if test="${ null != aliceConversationDetails }">
+			      <c:forEach items="${aliceConversationDetails}" var="element"> 
+			      	<c:if test="${element.messageType.equalsIgnoreCase('TIME_INDICATOR')}">
+			      		<div class="time-indicator"><div class="time-indicator-content">${element.getMessage()}</div><hr /></div>
+			      	</c:if> 
+			      	<c:if test="${element.messageType.equalsIgnoreCase('ITEM_BOT')}">
+			      		<div class="item-container item-container-bot"><div class="item"><p>${element.getMessage()}</p></div></div>
+			      	</c:if>
+			      	<c:if test="${element.messageType.equalsIgnoreCase('ITEM_USER')}">
+			      		<div class="item-container item-container-user"><div class="item"><p>${element.getMessage()}</p></div></div>
+			      	</c:if>
+				  </c:forEach>
+		      </c:if>
+		      
+		    </div>
+		    <div class="app-footer">
+		      <div class="app-footer-inner">
+		        <div class="mic">
+		          <div class="speech">
+					<input type="text" name="s" id="transcript" placeholder="Speak" />
+					<input type="button" id="transcriptButton" value="Save"/>
+				  </div>
+		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" /></a></div>
+		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
+		        </div>
+		
+		      </div>
+		    </div>
+		  </div>
 	</div>
 
 </body>
