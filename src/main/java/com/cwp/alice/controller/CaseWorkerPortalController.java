@@ -60,7 +60,8 @@ public class CaseWorkerPortalController {
 				/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
 						.getDetails()).getSessionId();*/
 				System.out.println("Session Id is :"+aliceSecretKey);
-				session.setAttribute("aliceSecretKey", "bi898921f3e9563f82cai6g62i630ef4a7e");
+				//session.setAttribute("aliceSecretKey", "bi898921f3e9563f82cai6g62i630ef4a7e");
+				session.setAttribute("aliceSecretKey", aliceSecretKey);
 			} else {
 				aliceSecretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
 			}
