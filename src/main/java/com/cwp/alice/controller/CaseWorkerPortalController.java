@@ -60,14 +60,13 @@ public class CaseWorkerPortalController {
 				/*String sessionId = ((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
 						.getDetails()).getSessionId();*/
 				System.out.println("Session Id is :"+aliceSecretKey);
-				session.setAttribute("aliceSecretKey", aliceSecretKey);
+				session.setAttribute("aliceSecretKey", "bi898921f3e9563f82cai6g62i630ef4a7e");
 			} else {
 				aliceSecretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
 			}
 			
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CwUsers cwUsers = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
-			cwUsers.setName("Aloo");
 			cwUsers.setSessionId(aliceSecretKey);
 			cwpServices.updateAccountDetails(cwUsers);
 			CwUsers cwUsersNew = cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername()));
@@ -234,7 +233,7 @@ public class CaseWorkerPortalController {
 		try {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-			return "Welcome <b>" + cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername())) + "</b>. " + "\t" + " Logged on: "
+			return "Welcome <b>" + cwpServices.findCaseWorkerById(Integer.valueOf(user.getUsername())).getName() + "</b>. " + "\t" + " Logged on: "
 					+ DateUtil.getDayAndDateInString(new Date());
 		} catch (Exception e) {
 			errorLogger.error("Classname: CwpDashboardController. Guest login: " + e);
