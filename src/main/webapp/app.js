@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return;
   }
 
-  
+  var initialContent = true;
   function handleResponse(serverResponse) {
 
       // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
@@ -91,7 +91,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       
       var msg = new SpeechSynthesisUtterance(speech);
       addBotItem(displayText);
-      runAliceCommand(displayText);
+      if(initialContent!== undefined && !initialContent){
+    	  runAliceCommand(displayText);
+      }
       /*ga('send', 'event', 'Message', 'add', 'bot');*/
       msg.addEventListener("end", function(ev) {
         window.clearTimeout(timer);
@@ -128,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  
 	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101/abcd"}});
 	
+	  initialContent = true;
 	  promise
 	      .then(handleResponse)
 	      .catch(handleError);
@@ -147,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	    //let promise = apiClient.textRequest(recognizedText);
 	    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
 	
+	    initialContent = true;
 	    promise
 	        .then(handleResponse)
 	        .catch(handleError);
@@ -183,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	 addUserItem(dummyText);
 	 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
 
+	 initialContent = false;
 	    promise
 	        .then(handleResponse)
 	        .catch(handleError);
