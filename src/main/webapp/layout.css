@@ -1,4 +1,4 @@
-body {
+/* body {
   background-color: #f3f5f6;
   padding: 0;
   margin: 0;
@@ -8,7 +8,7 @@ body {
 
 html {
   height: 100%;
-}
+} */
 
 .app-container {
   display: flex;
@@ -17,7 +17,7 @@ html {
 }
 
 .app-header {
-  background-color: #3D4145;
+  background-color: #113f7e;
   height: 77px;
   color: #ffffff;
   flex-grow: 0;
@@ -27,10 +27,10 @@ html {
 }
 
 .app-header > h1 {
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 400;
   margin: 0;
-  margin-top: 28px;
+  margin-top: 22px;
 }
 
 .app-content {
