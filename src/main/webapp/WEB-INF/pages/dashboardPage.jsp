@@ -154,7 +154,7 @@
     <div id="overlay"></div>
 	<div id="popup">
 	   <div class="app-container">
-		   <div class="app-header"><h1>Alice at your help</h1></div>
+		   <div class="app-header"><img src="img/dummy.jpg"/><h1>Alice at your help</h1></div>
 		   <div class="app-content">
 		   	  <c:if test="${ null == aliceConversationDetails }">
 		      	<div class="time-indicator"><div class="time-indicator-content"></div><hr /></div>
