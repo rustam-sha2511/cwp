@@ -154,26 +154,33 @@
     <div id="overlay"></div>
 	<div id="popup">
 	   <div class="app-container">
-		    <div class="app-header"><h1>Alice at your help</h1></div>
-		    <div class="app-content">
-		      <div class="time-indicator"><div class="time-indicator-content">8:20</div><hr /></div>
+		   <div class="app-header"><h1>Alice at your help</h1></div>
+		   <div class="app-content">
+		   	  <c:if test="${ null == aliceConversationDetails }">
+		      	<div class="time-indicator"><div class="time-indicator-content"></div><hr /></div>
+		      </c:if>
 		      <c:if test="${ null != aliceConversationDetails }">
-			      <c:forEach items="aliceConversationDetails" var="element">   
-			      	<c:if test="${element.getMessageType().equalsIgnoreCase('TIME_INDICATOR')}">
+			      <c:forEach items="${aliceConversationDetails}" var="element"> 
+			      	<c:if test="${element.messageType.equalsIgnoreCase('TIME_INDICATOR')}">
 			      		<div class="time-indicator"><div class="time-indicator-content">${element.getMessage()}</div><hr /></div>
 			      	</c:if> 
-			      	<c:if test="${element.getMessageType().equalsIgnoreCase('ITEM_BOT')}">
+			      	<c:if test="${element.messageType.equalsIgnoreCase('ITEM_BOT')}">
 			      		<div class="item-container item-container-bot"><div class="item"><p>${element.getMessage()}</p></div></div>
 			      	</c:if>
-			      	<c:if test="${element.getMessageType().equalsIgnoreCase('ITEM_USER')}">
+			      	<c:if test="${element.messageType.equalsIgnoreCase('ITEM_USER')}">
 			      		<div class="item-container item-container-user"><div class="item"><p>${element.getMessage()}</p></div></div>
 			      	</c:if>
 				  </c:forEach>
 		      </c:if>
+		      
 		    </div>
 		    <div class="app-footer">
 		      <div class="app-footer-inner">
 		        <div class="mic">
+		          <div class="speech">
+					<input type="text" name="s" id="transcript" placeholder="Speak" />
+					<input type="button" id="transcriptButton" value="Save"/>
+				  </div>
 		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" /></a></div>
 		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
 		        </div>
