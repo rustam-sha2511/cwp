@@ -43,7 +43,7 @@
 	src='${pageContext.request.contextPath}/js/findFactory.js'></script>
 
 
-<link rel="stylesheet" type="text/css" href="normalize.css" />
-<link rel="stylesheet" type="text/css" href="layout.css" />
-<script type="text/javascript" src="app.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/normalize.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/layout.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/app.js"></script>
 <script src='${pageContext.request.contextPath}/js/generic.js'></script>
