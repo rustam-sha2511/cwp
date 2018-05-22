@@ -90,6 +90,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
       const displayText = (jsonServerResponse["result"]["fulfillment"]["displayText"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["displayText"];
       
       var msg = new SpeechSynthesisUtterance(speech);
+      var voices = window.speechSynthesis.getVoices();
+      msg.default = false;
+      msg.voice = voices.filter(function(voice) { return voice.name == 'Google UK English Female'; })[0];
+      msg.lang = 'en-GB';
+
       addBotItem(displayText);
       if(initialContent!== undefined && !initialContent){
     	  runAliceCommand(displayText);
@@ -104,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         startListening();
       });
 
+      
       window.speechSynthesis.speak(msg);
     }
     function handleError(serverError) {
