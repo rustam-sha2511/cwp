@@ -107,7 +107,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
 				
 				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
-					String responseOut = "You do not have permission to open the case " + cwCase.getCwId()
+					String responseOut = "You do not have permission to open the case " + inputCaseId
 							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
 					
 					responseRootObject.setSpeech(responseOut);
@@ -126,7 +126,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
 				
 				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
-					String responseOut = "You do not have permission to open the case " + cwCase.getCwId()
+					String responseOut = "You do not have permission to open the case " + inputCaseId
 							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
 					
 					responseRootObject.setSpeech(responseOut);
@@ -145,7 +145,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
 				
 				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
-					String responseOut = "You do not have permission to open the case " + cwCase.getCwId()
+					String responseOut = "You do not have permission to open the case " + inputCaseId
 							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
 					
 					responseRootObject.setSpeech(responseOut);
