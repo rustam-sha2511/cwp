@@ -175,7 +175,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					sb.append("You have " + cwAppointments.size() + " pending for today.");
 
 					for (int i = 0; i < cwAppointments.size(); i++) {
-						sb.append("\nAppointment" + i + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
+						sb.append("\nAppointment " + (i+1) + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
 								" at " + cwAppointments.get(i).getTime() + " in " + cwAppointments.get(i).getLocation() + " for " + cwAppointments.get(i).getDuration());
 					}
 					
@@ -196,11 +196,27 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				String noOfAdults = adultCount;
 				String noOfChildren = childrenCount;*/
 				//String monthlyIncome = monthlyIncome;
+				//String responseOut = dfcServices.createNewCase(cwUsers, createCasePaName, adultCount, childrenCount, monthlyIncome);
+				String responseOut = "You are about to create a case for "+createCasePaName+" having "
+						+ adultCount+" adults and "+childrenCount+" children in family with monthly income of "+monthlyIncome+". "
+						+ "Do you agree with the details of case.";
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+			
+			if(intentName.equalsIgnoreCase("CaseCreationIntent - yes")) {
 				String responseOut = dfcServices.createNewCase(cwUsers, createCasePaName, adultCount, childrenCount, monthlyIncome);
 				
 				responseRootObject.setSpeech(responseOut);
 				responseRootObject.setDisplayText(responseOut);
 			}
+			
+			if(intentName.equalsIgnoreCase("CaseCreationIntent - no")) {
+				String responseOut = "Case creation was successfully aborted as requested by you.";
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
+			}
+					
 			
 			//Business Case: 7
 			if(intentName.equalsIgnoreCase("UpdateAccountIntent")) {
