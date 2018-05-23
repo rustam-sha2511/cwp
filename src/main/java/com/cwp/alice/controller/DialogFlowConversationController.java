@@ -74,10 +74,18 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			String userId = null;
 			String cwPwd = null;
 			String caseId = null;
+			String createCasePaName = null;
+			String monthlyIncome = null;
+			String childrenCount = null;
+			String adultCount = null;
 			for(Context contextObj: requestRootObject.getResult().getContexts()) {
 				if(contextObj.getName().equalsIgnoreCase("usercontext")) {
 					userId = contextObj.getParameters().getUser_id();
 					cwPwd = contextObj.getParameters().getCw_pwd();
+					createCasePaName = contextObj.getParameters().getPa_name();
+					monthlyIncome = contextObj.getParameters().getMonthly_income();
+					childrenCount = contextObj.getParameters().getChildren_count();
+					adultCount = contextObj.getParameters().getAdult_count();
 					break;
 				}
 			}
@@ -184,11 +192,11 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			
 			//Business Case: 6
 			if(intentName.equalsIgnoreCase("CaseCreationIntent")) {
-				String hohName = "Test User"; //TO-DO Get this dynamically from ALICE
-				String noOfAdults = "2";
-				String noOfChildren = "2";
-				String monthlyIncome = "200";
-				String responseOut = dfcServices.createNewCase(cwUsers, hohName, noOfAdults, noOfChildren, monthlyIncome);
+				/*String hohName = createCasePaName; //TO-DO Get this dynamically from ALICE
+				String noOfAdults = adultCount;
+				String noOfChildren = childrenCount;*/
+				//String monthlyIncome = monthlyIncome;
+				String responseOut = dfcServices.createNewCase(cwUsers, createCasePaName, adultCount, childrenCount, monthlyIncome);
 				
 				responseRootObject.setSpeech(responseOut);
 				responseRootObject.setDisplayText(responseOut);
