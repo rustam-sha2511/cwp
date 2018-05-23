@@ -66,7 +66,7 @@ var CustomCaseFilter = function () {
 				contentType:"application/json"
 			})
 			.done(function( msg ) {
-				alert('success when alice conversation object created');
+				//alert('success when alice conversation object created');
 				console.log("success when alice conversation object created");
 				window.location.href = '/CaseWorkerPortal/cwDashboard';
 			});
