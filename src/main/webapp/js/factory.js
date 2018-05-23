@@ -10,6 +10,8 @@ function Factory() {
             factoryObject = new DisplayCaseFilter();
         } else if (type === "VIEW_APPOINTMENTS") {
             factoryObject = new ViewAppointmentsFilter();
+        } else if (type === "LOGOUT_SCENE") {
+            factoryObject = new LogoutSceneFilter();
         }
  
         factoryObject.type = type;
@@ -156,6 +158,15 @@ var ViewAppointmentsFilter = function () {
 		filter: function (actingObject) { 
 			console.log('Executing filter for opening appointment logic');
 			return true;
+		}
+    }
+};
+
+var LogoutSceneFilter = function () {
+    return {
+        execute: function (actingObject) { 
+			console.log('Executing for logout logic');
+			window.location.href = '/CaseWorkerPortal/logout';
 		}
     }
 };
