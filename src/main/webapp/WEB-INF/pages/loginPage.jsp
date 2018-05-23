@@ -21,7 +21,7 @@
 	      <form name='f'
 					action="${pageContext.request.contextPath}/j_spring_security_check"
 					method='POST'>
-	      <div class="login__check"></div>
+	      <!-- <div class="login__check"></div> -->
 		  <div class="app-logo">Case <span>Worker </span>Portal</div>
 		  <div class="emt-logo"></div>
 	      <div class="login__form">

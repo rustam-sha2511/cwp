@@ -15,16 +15,16 @@ body{
 .navbar{
 	margin-bottom: 0;
 	border-radius: 0;
-	background-color: #000000;
+	background-color: #113f7e;
 	color: #FFFFFF;
 	font-size: 1.0em;
 	border: 0;
 }
 .navbar-inverse {
-    background-image: -webkit-linear-gradient(top, #3c3c3c 0%, #000000 100%);
-    background-image: -o-linear-gradient(top, #3c3c3c 0%, #000000 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), to(#000000));
-    background-image: linear-gradient(to bottom, #3c3c3c 0%, #000000 100%);
+    background-image: -webkit-linear-gradient(top, #113f7e 100%, #11294e 0%);
+    background-image: -o-linear-gradient(top, #113f7e 100%, #11294e 0%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#11294e), to(#113f7e));
+    background-image: linear-gradient(to bottom, #113f7e 100%, #11294e 0%);
 }
 .navbar-inverse .navbar-nav > li > a {
     color: #b8b8b8;
@@ -39,13 +39,13 @@ body{
 	color: #FFFFFF;
 }
 .navbar-inverse .navbar-nav .active a,.navbar-inverse .navbar-nav .active a:hover,.navbar-inverse .navbar-nav .active a:focus{
-	background-color: #000000;
+	background-color: #123461;
 	color: #85BB25;
 }
 .img-responsive{
-	max-height: 250%;
+	max-height: 155%;
     width: auto;
-    margin-top: -20px;
+    margin-top: -8px;
 }
 .emt-btn-plain{
 	width: 100%;
@@ -215,7 +215,7 @@ table.dataTable{
 }
 th.sorting_asc, th.sorting_desc, th.sorting {
     color: #dcdcdc;
-    background: #000000;
+    background: #113f7e;
     text-align: center;
     font-family: Calibri;
 }
@@ -228,14 +228,19 @@ th.sorting_asc, th.sorting_desc, th.sorting {
 }
 .voice-icon {
     position: fixed;
-    bottom: 10%;
-    right: 6%;
+    bottom: 0%;
+    right: 1%;
     z-index: 100;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
 .voice-icon a {
 	background-color: transparent !important;
+	opacity:0.7;
+}
+.voice-icon a:hover, .voice-icon a:focus {
+	background-color: transparent !important;
+	opacity:1.0;
 }
 .fa-microphone {
 	color: white;

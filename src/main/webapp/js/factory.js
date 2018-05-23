@@ -127,6 +127,10 @@ var DisplayCaseFilter = function () {
 			});
 			
 			//Add final outcome to chat interface
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for opening case logic');
+			return true;
 		}
     }
 };
@@ -148,6 +152,10 @@ var ViewAppointmentsFilter = function () {
 			});
 						
 			//Add final outcome to chat interface
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for opening appointment logic');
+			return true;
 		}
     }
 };
@@ -156,7 +164,9 @@ var ViewAppointmentsFilter = function () {
 function runAliceCommand(command) {
     var factory = new Factory();
 	var factoryInfo = findFactory.extractInfo(command);
+	if(factoryInfo !== undefined && factoryInfo !== ""){
 	factory.createObject(factoryInfo.objName).execute(factoryInfo.objValue);
+	}
     
 }
 

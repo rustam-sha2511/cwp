@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  addBotItem("Hi! I’m Alice. Logging you in ...");
 	  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
 	  
-	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101/abcd"}});
+	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101 / abcd"}});
 	
 	  initialContent = true;
 	  promise
@@ -144,13 +144,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  var recognition = new webkitSpeechRecognition();
 	  var recognizedText = null;
 	  recognition.continuous = false;
+	  recognition.interimResults = true;
 	  recognition.onstart = function() {
 	    recognizedText = null;
 	  };
 	  recognition.onresult = function(ev) {
-	    recognizedText = ev["results"][0][0]["transcript"];
+	    //recognizedText = ev["results"][0][0]["transcript"];
 	
-	    addUserItem(recognizedText);
+	    var interim_transcript = '';
+	    recognizedText = '';
+
+	    for (var i = ev.resultIndex; i < ev.results.length; ++i) {
+	      if (ev.results[i].isFinal) {
+	    	recognizedText += ev.results[i][0].transcript;
+	    	addUserItem(recognizedText);
+	      } else {
+	        interim_transcript += ev.results[i][0].transcript;
+	      }
+	    }
+	    
+	    //final_transcript = capitalize(final_transcript);
+	    //final_span.innerHTML = linebreak(final_transcript);
+	    //addUserItem(recognizedText);
+	    $('#transcript').val(interim_transcript);
+	    
+	    
 	    /*ga('send', 'event', 'Message', 'add', 'user');*/
 	
 	    //let promise = apiClient.textRequest(recognizedText);
@@ -182,11 +200,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   const startButton = document.querySelector("#start");
-  /*startButton.addEventListener("click", function(ev) {
-    ga('send', 'event', 'Button', 'click');
+  startButton.addEventListener("click", function(ev) {
+    //ga('send', 'event', 'Button', 'click');
     startListening();
     ev.preventDefault();
-  });*/
+  });
   
   $("#transcriptButton").on("click", function(){
 	 var dummyText = $('#transcript').val();
