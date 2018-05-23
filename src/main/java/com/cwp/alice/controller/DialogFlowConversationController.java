@@ -230,6 +230,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			}
 			
 			//Business Case: 8
+			//Logout scenario
 			if(intentName.equalsIgnoreCase("AppLogoutIntent")) {
 				responseRootObject.setSpeech("It was great working with you. See you next time!");
 				responseRootObject.setDisplayText("It was great working with you. See you next time!");	
