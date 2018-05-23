@@ -121,7 +121,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "filtering results for case "+inputCaseId;
+					String responseOut = "One moment please. Filtering the table for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
@@ -160,7 +160,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "displaying case "+inputCaseId;
+					String responseOut = "One moment please. Opening details for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);

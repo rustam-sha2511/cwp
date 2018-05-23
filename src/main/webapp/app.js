@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   } else{
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
-	  addBotItem('Your filtered result is ready.');
+	  addBotItem('Your result is ready.');
   }
   
   function startListening() {
