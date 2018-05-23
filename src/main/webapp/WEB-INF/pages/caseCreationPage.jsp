@@ -229,8 +229,7 @@
             <li>
             	<a href="javascript:void(0);" id="voice-icon">
 	                <span class="fa-stack fa-2x">
-		                <i class="fa fa-circle fa-stack-2x"></i>
-		                <i aria-hidden="true" class="fa fa-microphone fa-stack-1x fa-x"></i>
+		                <i class="fa fa-weixin fa-stack-2x" style="color: #113f7e"></i>
 	            	</span>
             	</a>
             </li>
@@ -240,7 +239,8 @@
     <div id="overlay"></div>
 	<div id="popup">
 	   <div class="app-container">
-		   <div class="app-header"><h1>Alice at your help</h1></div>
+		   <div class="app-header"><img src="img/VoiceBot.png"/><h1>Alice at your help
+		   	<span id="minimizeAlice"><i class="fa fa-window-close"></i></span></h1></div>
 		   <div class="app-content">
 		   	  <c:if test="${ null == aliceConversationDetails }">
 		      	<div class="time-indicator"><div class="time-indicator-content"></div><hr /></div>
@@ -262,12 +262,12 @@
 		    </div>
 		    <div class="app-footer">
 		      <div class="app-footer-inner">
-		        <div class="mic">
-		          <div class="speech">
+		      	<div class="speech">
 					<input type="text" name="s" id="transcript" placeholder="Speak" />
-					<input type="button" id="transcriptButton" value="Save"/>
-				  </div>
-		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" /></a></div>
+					<span id="transcriptButton"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+				</div>
+		        <div class="mic">		          
+		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" style="height: 33px;"/></a></div>
 		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
 		        </div>
 		
