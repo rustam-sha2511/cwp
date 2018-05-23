@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  //const apiClient = new ApiAi.ApiAiClient({accessToken: '13f191c473134f38a31d4232ca319f9b'});
 	
 	  // Initial feedback message.
-	  addBotItem("Hi! I’m Alice. Logging you in ...");
+	  //addBotItem("Hi! I’m Alice. Logging you in ...");
 	  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
 	  
 	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101 / abcd"}});
@@ -210,7 +210,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	 var dummyText = $('#transcript').val();
 	 addUserItem(dummyText);
 	 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
-
+	 $('#transcript').val('');
+	 
 	 initialContent = false;
 	    promise
 	        .then(handleResponse)
