@@ -132,19 +132,20 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			if(intentName.equalsIgnoreCase("CaseStatusIntent")) {
 				String inputCaseId = requestRootObject.getResult().getParameters().getCase_id();
 				CwCases cwCase = dfcServices.getCaseByCaseId(inputCaseId);
+				String responseOut = null;
 				
-				if (null != cwCase && cwCase.getCwId() != cwUsers.getCwId()) {
-					String responseOut = "You do not have permission to open the case " + inputCaseId
-							+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
-					
-					responseRootObject.setSpeech(responseOut);
-					responseRootObject.setDisplayText(responseOut);
+				if (null != cwCase && cwCase.getCwId() > 0) {
+					if (cwCase.getCwId() != cwUsers.getCwId()) {
+						responseOut = "You do not have permission to open the case " + inputCaseId
+								+ ". Please reach out to case owner " + cwCase.getAssignedCwName() + " at email " + cwUsers.getEmail();
+					} else {
+						responseOut = "Status of case "+inputCaseId+" is "+cwCase.getStatus()+".";
+					}
 				} else {
-					String responseOut = "Status of case "+inputCaseId+" is "+cwCase.getStatus()+".";
-			
-					responseRootObject.setSpeech(responseOut);
-					responseRootObject.setDisplayText(responseOut);
+					responseOut = "I cannot find any case status with the provided case ID.";
 				}
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
 			}
 			
 			//Business Case: 3 & 4
@@ -248,8 +249,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			errorLogger.error("Classname: CwpDashboardController. Error in Case Creation: " + e);
 			e.printStackTrace();
 			logger.error("Error in Case Creation: " + e.getMessage());
-			responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
-			responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
+			responseRootObject.setSpeech("I am facing some technical difficulties right now to perform this action for you. Please contact Administrator.");
+			responseRootObject.setDisplayText("I am facing some technical difficulties right now to perform this action for you. Please contact Administrator.");
 			requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
 			responseRootObject.setSource("cws.openshift.com");
 		}
