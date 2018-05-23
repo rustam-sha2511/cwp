@@ -27,9 +27,9 @@ var findFactory = (function () {
 	
     return {		
         extractInfo: function (msg) {
-			var customCaseFilterSet = ['filtering results for case worker ','filtering results for case '];
-			var ownerCaseFilterSet = ['showing cases assigned to '];
-			var caseDisplaySet = ['displaying case '];
+			var customCaseFilterSet = ['filtering results for case worker ','filtering results for case ', 'Filtering the table for case '];
+			var ownerCaseFilterSet = ['showing cases assigned to ', 'Filtering the table to show all your cases '];
+			var caseDisplaySet = ['displaying case ', 'Opening details for case '];
 			var viewAppointmentSet = ['view all my appointments for today'];
 			var currentExecutionObj = "";
 			if (true == (function(){var resultObj = compareObj.compare(msg, customCaseFilterSet);

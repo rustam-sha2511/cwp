@@ -56,7 +56,7 @@ INSERT INTO cw_appointments
             , 'Kevin Mitnick'
             , 'Daily Sprint Status Call'
             , 'T1F Meeting Room Delhi'
-            , '05/23/2018'
+            , '05/24/2018'
             , '10:00'
             , '30 Minutes'
        )
@@ -76,8 +76,8 @@ INSERT INTO cw_appointments
             , 'Joe Gatto'
             , 'Firm Initiative'
             , 'Skype'
-            , '05/23/2018'
-            , '20:00'
+            , '05/24/2018'
+            , '23:00'
             , '1 Hour'
        )
 ;
@@ -96,8 +96,8 @@ INSERT INTO cw_appointments
             , 'James Murray'
             , 'Daily Client Call'
             , 'Skype'
-            , '05/23/2018'
-            , '20:00'
+            , '05/24/2018'
+            , '23:00'
             , '30 Minutes'
        )
 ;
@@ -116,8 +116,8 @@ INSERT INTO cw_appointments
             , 'Satoshi Nakamoto'
             , 'All Hands Meet'
             , 'Break-out Area'
-            , '05/23/2018'
-            , '17:00'
+            , '05/24/2018'
+            , '20:00'
             , '30 Minutes'
        )
 ;
@@ -136,8 +136,8 @@ INSERT INTO cw_appointments
             , 'Amit Kumar'
             , 'Well-being Session'
             , 'Cafetaria'
-            , '05/23/2018'
-            , '10:30'
+            , '05/24/2018'
+            , '11:30'
             , '30 Minutes'
        )
 ;
@@ -156,7 +156,7 @@ INSERT INTO cw_appointments
             , 'Kevin Mitnick'
             , 'Daily Sprint Status Call'
             , 'T1F Meeting Room Delhi'
-            , '05/23/2018'
+            , '05/24/2018'
             , '15:00'
             , '30 Minutes'
        )
