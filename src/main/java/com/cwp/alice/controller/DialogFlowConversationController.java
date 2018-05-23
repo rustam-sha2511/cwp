@@ -121,7 +121,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "Filtering the table for case "+inputCaseId;
+					String responseOut = "filtering results for case "+inputCaseId;
+					//String responseOut = "One moment please. Filtering the table for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
@@ -160,7 +161,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "Opening details for case "+inputCaseId;
+					String responseOut = "displaying case "+inputCaseId;
+					//String responseOut = "One moment please. Opening details for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
@@ -235,8 +237,10 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				
 			} else if(intentName.equalsIgnoreCase("DisplayOwnerCaseIntent")){
 				//Business Case: 9
-				responseRootObject.setSpeech("One moment. Filtering the table to show cases assigned to you");
-				responseRootObject.setDisplayText("One moment. Filtering the table to show cases assigned to "+cwUsers.getName());
+				responseRootObject.setSpeech("showing cases assigned to you");
+				responseRootObject.setDisplayText("showing cases assigned to "+cwUsers.getName());
+				//responseRootObject.setSpeech("One moment. Filtering the table to show cases assigned to you");
+				//responseRootObject.setDisplayText("One moment. Filtering the table to show cases assigned to "+cwUsers.getName());
 			}
 			
 			
