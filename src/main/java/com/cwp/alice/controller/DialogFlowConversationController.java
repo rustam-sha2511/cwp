@@ -235,7 +235,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			
 			//Business Case: 8
 			if(intentName.equalsIgnoreCase("AppLogoutIntent")) {
-				
+				responseRootObject.setSpeech("It was great working with you. See you next time!");
+				responseRootObject.setDisplayText("It was great working with you. See you next time!");	
 			} else if(intentName.equalsIgnoreCase("DisplayOwnerCaseIntent")){
 				//Business Case: 9
 				responseRootObject.setSpeech("showing cases assigned to you");
