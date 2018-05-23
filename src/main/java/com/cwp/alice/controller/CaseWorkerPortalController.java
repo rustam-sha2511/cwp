@@ -64,6 +64,7 @@ public class CaseWorkerPortalController {
 				session.setAttribute("aliceSecretKey", aliceSecretKey);
 			} else {
 				aliceSecretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
+				System.out.println("Old Session Id is :"+aliceSecretKey);
 			}
 			
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
