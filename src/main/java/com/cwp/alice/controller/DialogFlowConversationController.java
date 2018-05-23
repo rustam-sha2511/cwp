@@ -121,8 +121,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "filtering results for case "+inputCaseId;
-					//String responseOut = "One moment please. Filtering the table for case "+inputCaseId;
+					//String responseOut = "filtering results for case "+inputCaseId;
+					String responseOut = "Filtering the table for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
@@ -161,8 +161,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
 				} else {
-					String responseOut = "displaying case "+inputCaseId;
-					//String responseOut = "One moment please. Opening details for case "+inputCaseId;
+					//String responseOut = "displaying case "+inputCaseId;
+					String responseOut = "Opening details for case "+inputCaseId;
 			
 					responseRootObject.setSpeech(responseOut);
 					responseRootObject.setDisplayText(responseOut);
@@ -178,10 +178,6 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					sb.append("You have " + cwAppointments.size() + " appointments pending for today.");
 
 					for (int i = 0; i < cwAppointments.size(); i++) {
-						/*sb.append("\nAppointment " + (i+1) + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
-								" at " + cwAppointments.get(i).getTime() + " in " + cwAppointments.get(i).getLocation() + " for " + cwAppointments.get(i).getDuration());*/
-						/*sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + ". The meeting agenda is " + cwAppointments.get(i).getSubject() + 
-								" . Meeting start time is " + cwAppointments.get(i).getTime() + " and the duration of the meeting is for " + cwAppointments.get(i).getDuration());*/
 						sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + " at " + cwAppointments.get(i).getTime());
 					}
 					
@@ -217,7 +213,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			}
 			
 			if(intentName.equalsIgnoreCase("CaseCreationIntent - no")) {
-				String responseOut = "Case creation was successfully aborted as requested by you.";
+				String responseOut = "Case creation cancelled. Let me know if you change your mind.";
 				responseRootObject.setSpeech(responseOut);
 				responseRootObject.setDisplayText(responseOut);
 			}
@@ -238,10 +234,10 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				
 			} else if(intentName.equalsIgnoreCase("DisplayOwnerCaseIntent")){
 				//Business Case: 9
-				responseRootObject.setSpeech("showing cases assigned to you");
-				responseRootObject.setDisplayText("showing cases assigned to "+cwUsers.getName());
-				//responseRootObject.setSpeech("One moment. Filtering the table to show cases assigned to you");
-				//responseRootObject.setDisplayText("One moment. Filtering the table to show cases assigned to "+cwUsers.getName());
+				//responseRootObject.setSpeech("showing cases assigned to you");
+				//responseRootObject.setDisplayText("showing cases assigned to "+cwUsers.getName());
+				responseRootObject.setSpeech("Filtering the table to show all your cases ");
+				responseRootObject.setDisplayText("Filtering the table to show all your cases "+cwUsers.getName());
 			}
 			
 			
