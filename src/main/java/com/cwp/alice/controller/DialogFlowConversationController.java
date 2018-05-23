@@ -180,8 +180,9 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					for (int i = 0; i < cwAppointments.size(); i++) {
 						/*sb.append("\nAppointment " + (i+1) + " is with " + cwAppointments.get(i).getOrganizer() + " for " + cwAppointments.get(i).getSubject() + 
 								" at " + cwAppointments.get(i).getTime() + " in " + cwAppointments.get(i).getLocation() + " for " + cwAppointments.get(i).getDuration());*/
-						sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + ". The meeting agenda is " + cwAppointments.get(i).getSubject() + 
-								" . Meeting start time is " + cwAppointments.get(i).getTime() + " and the duration of the meeting is for " + cwAppointments.get(i).getDuration());
+						/*sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + ". The meeting agenda is " + cwAppointments.get(i).getSubject() + 
+								" . Meeting start time is " + cwAppointments.get(i).getTime() + " and the duration of the meeting is for " + cwAppointments.get(i).getDuration());*/
+						sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + " at " + cwAppointments.get(i).getTime());
 					}
 					
 					sb.append("\nFor details, visit the My Appointments page.");
