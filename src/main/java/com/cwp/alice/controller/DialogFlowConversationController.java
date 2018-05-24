@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cwp.alice.constants.GenericConstants;
 import com.cwp.alice.dto.AliceConversationDetails;
+import com.cwp.alice.model.CaseStatus;
 import com.cwp.alice.model.CwAppointments;
 import com.cwp.alice.model.CwCases;
 import com.cwp.alice.model.CwUsers;
@@ -74,6 +75,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			String userId = null;
 			String cwPwd = null;
 			String caseId = null;
+			String newStatus = null;
 			String createCasePaName = null;
 			String monthlyIncome = null;
 			String childrenCount = null;
@@ -86,6 +88,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					monthlyIncome = contextObj.getParameters().getMonthly_income();
 					childrenCount = contextObj.getParameters().getChildren_count();
 					adultCount = contextObj.getParameters().getAdult_count();
+					caseId = contextObj.getParameters().getCase_id();
+					newStatus = contextObj.getParameters().getNew_status();
 					break;
 				}
 			}
@@ -240,8 +244,22 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				//responseRootObject.setDisplayText("showing cases assigned to "+cwUsers.getName());
 				responseRootObject.setSpeech("Filtering the table to show all your cases ");
 				responseRootObject.setDisplayText("Filtering the table to show all your cases "+cwUsers.getName());
+			} else if(intentName.equalsIgnoreCase("UpdateCaseStatusIntent")){
+				//Business Case: 10
+				CwCases cwCase = cwpServices.getCaseByCaseId(caseId);
+				String responseOut = null;
+				if(!newStatus.equalsIgnoreCase(CaseStatus.APPROVED.value())
+						&& !newStatus.equalsIgnoreCase(CaseStatus.DENIED.value())) {
+					responseOut = "The status to be updated with is invalid";
+					requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
+				} else {
+					responseOut = dfcServices.updateCaseStatus(cwCase, newStatus);
+				}
+				
+				responseRootObject.setSpeech(responseOut);
+				responseRootObject.setDisplayText(responseOut);
 			}
-			
+						
 			
 			responseRootObject.setSource("cws.openshift.com");
 			
