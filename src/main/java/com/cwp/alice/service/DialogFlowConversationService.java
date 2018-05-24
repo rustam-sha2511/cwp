@@ -23,4 +23,6 @@ public interface DialogFlowConversationService {
 			throws Exception;
 
 	String updateAccountDetails(CwUsers cwUsers, String updateFieldType, String updatedFieldValue) throws Exception;
+	
+	String updateCaseStatus(CwCases cwCase, String updatedStatus) throws Exception;
 }

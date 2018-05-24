@@ -29,4 +29,6 @@ public interface CaseWorkerPortalService {
 	CwUsers findCaseWorkerById(Integer cwId) throws GlobalException;
 
 	void updateAccountDetails(CwUsers cwUsers) throws GlobalException;
+	
+	void updateCase(CwCases cwCase) throws GlobalException;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.cwp.alice.dao.CaseWorkerPortalDAO;
 import com.cwp.alice.form.CaseCreationForm;
 import com.cwp.alice.form.CaseDescriptionForm;
+import com.cwp.alice.model.CaseStatus;
 import com.cwp.alice.model.CwAppointments;
 import com.cwp.alice.model.CwCases;
 import com.cwp.alice.model.CwUsers;
@@ -122,6 +123,21 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 				}
 			}
 		}
+
+		return responseOut;
+	}
+	
+	@Override
+	public String updateCaseStatus(CwCases cwCase, String updatedStatus) throws Exception {
+		String responseOut = "The case cannot be updated. Please contact Administrator.";
+		
+		if(cwCase.getStatus() == CaseStatus.PENDING_REVIEW.value()) {
+			cwCase.setStatus(updatedStatus);
+		} else if(cwCase.getStatus() == CaseStatus.APPROVED.value()
+				|| cwCase.getStatus() == CaseStatus.DENIED.value()) {
+			responseOut = "The case cannot be updated from current status. Please contact Administrator.";
+		}
+		cwpServices.updateCase(cwCase);
 
 		return responseOut;
 	}

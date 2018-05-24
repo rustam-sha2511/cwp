@@ -124,5 +124,9 @@ public class CaseWorkerPortalServiceImpl implements CaseWorkerPortalService {
 	public void updateAccountDetails(CwUsers cwUsers) throws GlobalException {
 		cwpDAO.updateUser(cwUsers);
 	}
-
+	
+	@Override
+	public void updateCase(CwCases cwCase) throws GlobalException {
+		cwpDAO.updateCase(cwCase);
+	}
 }
