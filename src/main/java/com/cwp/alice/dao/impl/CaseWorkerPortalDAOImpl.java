@@ -96,6 +96,16 @@ public class CaseWorkerPortalDAOImpl implements CaseWorkerPortalDAO {
 		namedParameterJdbcTemplate.update(sql, getSqlParameterByModel(cwCase), keyHolder);
 		cwCase.setId(keyHolder.getKey().intValue());
 	}
+	
+	@Override
+	public void updateCase(CwCases cwCase) throws GlobalException {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		String sql = "UPDATE cw_cases SET start_date=:date, description=:desc, status=:status, "
+				+ "cw_assigned_name=:assignedCwName WHERE cw_id=:cwId";
+
+		namedParameterJdbcTemplate.update(sql, getSqlParameterByModel(cwCase), keyHolder);
+	}
 
 	@Override
 	public List<CwAppointments> getCwAppointments(Integer cwId) throws GlobalException {

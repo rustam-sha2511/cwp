@@ -27,4 +27,6 @@ public interface CaseWorkerPortalDAO {
 	List<CwAppointments> getCwAppointments(Integer cwId) throws GlobalException;
 
 	void updateUser(CwUsers cwUsers) throws GlobalException;
+	
+	void updateCase(CwCases cwCase) throws GlobalException;
 }
