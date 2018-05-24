@@ -250,7 +250,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				String responseOut = null;
 				if(!newStatus.equalsIgnoreCase(CaseStatus.APPROVED.value())
 						&& !newStatus.equalsIgnoreCase(CaseStatus.DENIED.value())) {
-					responseOut = "The status to be updated with is invalid";
+					responseOut = "It seems you have not provided a valid status. Status can only be changed to either APPROVED or DENIED.";
 					requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
 				} else {
 					responseOut = dfcServices.updateCaseStatus(cwCase, newStatus);

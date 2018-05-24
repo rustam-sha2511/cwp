@@ -126,17 +126,22 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 
 		return responseOut;
 	}
-	
+
 	@Override
 	public String updateCaseStatus(CwCases cwCase, String updatedStatus) throws Exception {
-		String responseOut = "The case cannot be updated. Please contact Administrator.";
-		
-		if(cwCase.getStatus() == CaseStatus.PENDING_REVIEW.value()) {
-			cwCase.setStatus(updatedStatus);
-		} else if(cwCase.getStatus() == CaseStatus.APPROVED.value()
-				|| cwCase.getStatus() == CaseStatus.DENIED.value()) {
-			responseOut = "The case cannot be updated from current status. Please contact Administrator.";
+		String responseOut = "I was unable to find the case to update the status. Please contact Administrator.";
+
+		if (null != cwCase && null != cwCase.getStatus()) {
+			if (cwCase.getStatus() == CaseStatus.PENDING_REVIEW.value()) {
+				cwCase.setStatus(updatedStatus);
+				responseOut = "The status of the case is changed to " + updatedStatus;
+			} else if (cwCase.getStatus() == CaseStatus.APPROVED.value()
+					|| cwCase.getStatus() == CaseStatus.DENIED.value()) {
+				responseOut = "The status of the case is already " + cwCase.getStatus()
+						+ " . Case with status as Pending for Review can only be changed.";
+			}
 		}
+
 		cwpServices.updateCase(cwCase);
 
 		return responseOut;
