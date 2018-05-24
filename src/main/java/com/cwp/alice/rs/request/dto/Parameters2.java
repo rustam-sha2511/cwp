@@ -4,6 +4,7 @@ public class Parameters2 {
 	private String user_id;
 	private String cw_pwd;
 	private String case_id;
+	private String new_status;
 	private String pa_name;
 	private String adult_count;
 	private String children_count;
@@ -51,5 +52,10 @@ public class Parameters2 {
 	public void setMonthly_income(String monthly_income) {
 		this.monthly_income = monthly_income;
 	}
-	
+	public String getNew_status() {
+		return new_status;
+	}
+	public void setNew_status(String new_status) {
+		this.new_status = new_status;
+	}
 }
