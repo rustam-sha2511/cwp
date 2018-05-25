@@ -239,7 +239,7 @@
     <div id="overlay"></div>
 	<div id="popup">
 	   <div class="app-container">
-		   <div class="app-header"><img src="img/VoiceBot.png"/><h1>Alice at your help
+		   <div class="app-header"><img src="${pageContext.request.contextPath}/img/VoiceBot.png"/><h1>Alice at your help
 		   	<span id="minimizeAlice"><i class="fa fa-window-close"></i></span></h1></div>
 		   <div class="app-content">
 		   	  <c:if test="${ null == aliceConversationDetails }">
@@ -267,7 +267,7 @@
 					<span id="transcriptButton"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
 				</div>
 		        <div class="mic">		          
-		          <div class="ready"><a href="#" id="start"><img src="i/mic.svg" alt="Tap me to speak" style="height: 33px;"/></a></div>
+		          <div class="ready"><a href="#" id="start"><img src="${pageContext.request.contextPath}/i/mic.svg" alt="Tap me to speak" style="height: 33px;"/></a></div>
 		          <div class="listening"><span class="listening-1">.</span><span class="listening-2">.</span><span class="listening-3">.</span></div>
 		        </div>
 		
