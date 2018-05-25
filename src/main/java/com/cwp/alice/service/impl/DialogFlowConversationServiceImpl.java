@@ -40,17 +40,19 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 	public List<CwAppointments> getCwAppointments(String cwId) throws Exception {
 		List<CwAppointments> cwAppointmentsList = cwpDAO.getCwAppointments(Integer.valueOf(cwId));
 		String todayDate = DateUtil.getDateInMMDDYYYYString(new Date());
-
+		System.out.println("Appointment todayDate" + todayDate);
 		List<CwAppointments> filteredAppointments = new ArrayList<>();
 		for (CwAppointments obj : cwAppointmentsList) {
 			LocalTime lt = LocalTime.parse(obj.getTime());
+			System.out.println("Appointment LocalTime" + lt);
+			System.out.println("Appointment cwAppointmentsList" + cwAppointmentsList);
 			if (!obj.getDate().equalsIgnoreCase(todayDate) || !lt.isAfter(LocalTime.now(ZoneId.of("Asia/Kolkata")))) {
 				filteredAppointments.add(obj);
 			}
 		}
-
+		System.out.println("Appointment filteredAppointments" + filteredAppointments);
 		cwAppointmentsList.removeAll(filteredAppointments);
-
+		System.out.println("Appointment FINAL cwAppointmentsList" + cwAppointmentsList);
 		return cwAppointmentsList;
 	}
 

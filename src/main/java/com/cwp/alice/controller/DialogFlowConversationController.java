@@ -182,7 +182,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					sb.append("You have " + cwAppointments.size() + " appointments pending for today.");
 
 					for (int i = 0; i < cwAppointments.size(); i++) {
-						sb.append("\nAppointment" + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + " at " + cwAppointments.get(i).getTime());
+						sb.append("\nAppointment " + (i + 1) + " is with " + cwAppointments.get(i).getOrganizer() + " at " + cwAppointments.get(i).getTime() + ".");
 					}
 					
 					sb.append("\nFor details, visit the My Appointments page.");
