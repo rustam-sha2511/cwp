@@ -233,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     } else {
         isEscape = (evt.keyCode == 27);
     }
+    
     if (isEscape) {
         recognition.abort();
     }
