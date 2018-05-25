@@ -124,6 +124,56 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   const timeIndicatorContent = document.querySelector(".time-indicator-content").innerHTML;
   var recognition = new webkitSpeechRecognition();
+  var recognizedText = null;
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.onstart = function() {
+    recognizedText = null;
+  };
+  recognition.onresult = function(ev) {
+    //recognizedText = ev["results"][0][0]["transcript"];
+
+    var interim_transcript = '';
+    recognizedText = '';
+
+    for (var i = ev.resultIndex; i < ev.results.length; ++i) {
+      if (ev.results[i].isFinal) {
+    	recognizedText += ev.results[i][0].transcript;
+    	addUserItem(recognizedText);
+      } else {
+        interim_transcript += ev.results[i][0].transcript;
+      }
+    }
+    
+    //final_transcript = capitalize(final_transcript);
+    //final_span.innerHTML = linebreak(final_transcript);
+    //addUserItem(recognizedText);
+    $('#transcript').val(interim_transcript);
+    
+    
+    /*ga('send', 'event', 'Message', 'add', 'user');*/
+
+    //let promise = apiClient.textRequest(recognizedText);
+    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
+
+    if($(".time-indicator-content").text() === undefined || $(".time-indicator-content").text() === ""){
+    	initialContent = true;
+    } else{
+    	initialContent = false;
+    }
+    promise
+        .then(handleResponse)
+        .catch(handleError);
+    
+  };
+
+  recognition.onerror = function(ev) {
+    console.log("Speech recognition error", ev);
+  };
+  recognition.onend = function() {
+    gotoReadyState();
+  };
+  
   if(timeIndicatorContent === undefined || timeIndicatorContent === ""){
 	  displayCurrentTime();
 	  //Now we’ve established that the browser is Chrome with proper speech API-s.
@@ -141,57 +191,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  promise
 	      .then(handleResponse)
 	      .catch(handleError);
-		  
-	  var recognizedText = null;
-	  recognition.continuous = false;
-	  recognition.interimResults = true;
-	  recognition.onstart = function() {
-	    recognizedText = null;
-	  };
-	  recognition.onresult = function(ev) {
-	    //recognizedText = ev["results"][0][0]["transcript"];
-	
-	    var interim_transcript = '';
-	    recognizedText = '';
-
-	    for (var i = ev.resultIndex; i < ev.results.length; ++i) {
-	      if (ev.results[i].isFinal) {
-	    	recognizedText += ev.results[i][0].transcript;
-	    	addUserItem(recognizedText);
-	      } else {
-	        interim_transcript += ev.results[i][0].transcript;
-	      }
-	    }
-	    
-	    //final_transcript = capitalize(final_transcript);
-	    //final_span.innerHTML = linebreak(final_transcript);
-	    //addUserItem(recognizedText);
-	    $('#transcript').val(interim_transcript);
-	    
-	    
-	    /*ga('send', 'event', 'Message', 'add', 'user');*/
-	
-	    //let promise = apiClient.textRequest(recognizedText);
-	    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
-	
-	    if($(".time-indicator-content").text() === undefined || $(".time-indicator-content").text() === ""){
-	    	initialContent = true;
-	    } else{
-	    	initialContent = false;
-	    }
-	    promise
-	        .then(handleResponse)
-	        .catch(handleError);
-	
-	    
-	  };
-	
-	  recognition.onerror = function(ev) {
-	    console.log("Speech recognition error", ev);
-	  };
-	  recognition.onend = function() {
-	    gotoReadyState();
-	  };
+		  	  
   } else{
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
