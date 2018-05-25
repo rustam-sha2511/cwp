@@ -223,6 +223,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   
 
+  //Added for enter key event on input box
+  $("#transcript").keyup(function(event) {
+	    if (event.keyCode === 13) {
+	        $("#transcriptButton").click();
+	    }
+  });
+  
   // Esc key handler - cancel listening if pressed
   // http://stackoverflow.com/questions/3369593/how-to-detect-escape-key-press-with-javascript-or-jquery
   document.addEventListener("keydown", function(evt) {
