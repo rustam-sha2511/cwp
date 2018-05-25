@@ -212,14 +212,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   $("#transcriptButton").on("click", function(){
 	 var dummyText = $('#transcript').val();
-	 addUserItem(dummyText);
-	 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
-	 $('#transcript').val('');
-	 
-	 initialContent = false;
-	    promise
-	        .then(handleResponse)
-	        .catch(handleError);
+	 if(dummyText !== undefined && dummyText !== ''){
+		 addUserItem(dummyText);
+		 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
+		 $('#transcript').val('');
+		 
+		 initialContent = false;
+		    promise
+		        .then(handleResponse)
+		        .catch(handleError);
+  	 }
   });
   
 
