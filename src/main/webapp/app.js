@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   
   const timeIndicatorContent = document.querySelector(".time-indicator-content").innerHTML;
+  var recognition = new webkitSpeechRecognition();
   if(timeIndicatorContent === undefined || timeIndicatorContent === ""){
 	  displayCurrentTime();
 	  //Now we’ve established that the browser is Chrome with proper speech API-s.
@@ -140,8 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  promise
 	      .then(handleResponse)
 	      .catch(handleError);
-	
-	  var recognition = new webkitSpeechRecognition();
+		  
 	  var recognizedText = null;
 	  recognition.continuous = false;
 	  recognition.interimResults = true;
@@ -174,7 +174,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	    //let promise = apiClient.textRequest(recognizedText);
 	    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
 	
-	    initialContent = true;
+	    if($(".time-indicator-content").text() === undefined || $(".time-indicator-content").text() === ""){
+	    	initialContent = true;
+	    } else{
+	    	initialContent = false;
+	    }
 	    promise
 	        .then(handleResponse)
 	        .catch(handleError);
