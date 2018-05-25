@@ -40,17 +40,19 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 	public List<CwAppointments> getCwAppointments(String cwId) throws Exception {
 		List<CwAppointments> cwAppointmentsList = cwpDAO.getCwAppointments(Integer.valueOf(cwId));
 		String todayDate = DateUtil.getDateInMMDDYYYYString(new Date());
-
+		System.out.println("Appointment todayDate" + todayDate);
 		List<CwAppointments> filteredAppointments = new ArrayList<>();
 		for (CwAppointments obj : cwAppointmentsList) {
 			LocalTime lt = LocalTime.parse(obj.getTime());
+			System.out.println("Appointment LocalTime" + lt);
+			System.out.println("Appointment cwAppointmentsList" + cwAppointmentsList);
 			if (!obj.getDate().equalsIgnoreCase(todayDate) || !lt.isAfter(LocalTime.now(ZoneId.of("Asia/Kolkata")))) {
 				filteredAppointments.add(obj);
 			}
 		}
-
+		System.out.println("Appointment filteredAppointments" + filteredAppointments);
 		cwAppointmentsList.removeAll(filteredAppointments);
-
+		System.out.println("Appointment FINAL cwAppointmentsList" + cwAppointmentsList);
 		return cwAppointmentsList;
 	}
 
@@ -126,17 +128,22 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 
 		return responseOut;
 	}
-	
+
 	@Override
 	public String updateCaseStatus(CwCases cwCase, String updatedStatus) throws Exception {
-		String responseOut = "The case cannot be updated. Please contact Administrator.";
-		
-		if(cwCase.getStatus() == CaseStatus.PENDING_REVIEW.value()) {
-			cwCase.setStatus(updatedStatus);
-		} else if(cwCase.getStatus() == CaseStatus.APPROVED.value()
-				|| cwCase.getStatus() == CaseStatus.DENIED.value()) {
-			responseOut = "The case cannot be updated from current status. Please contact Administrator.";
+		String responseOut = "I was unable to find the case to update the status. Please contact Administrator.";
+
+		if (null != cwCase && null != cwCase.getStatus()) {
+			if (cwCase.getStatus() == CaseStatus.PENDING_REVIEW.value()) {
+				cwCase.setStatus(updatedStatus);
+				responseOut = "The status of the case is changed to " + updatedStatus;
+			} else if (cwCase.getStatus() == CaseStatus.APPROVED.value()
+					|| cwCase.getStatus() == CaseStatus.DENIED.value()) {
+				responseOut = "The status of the case is already " + cwCase.getStatus()
+						+ " . Case with status as Pending for Review can only be changed.";
+			}
 		}
+
 		cwpServices.updateCase(cwCase);
 
 		return responseOut;
