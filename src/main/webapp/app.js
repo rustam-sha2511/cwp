@@ -15,6 +15,16 @@ function isChrome() {
   }
 }
 
+function showAliceSpinner() {
+  const loadingDiv = document.querySelector(".loaderDiv");
+  loadingDiv.style.display = "block";
+}
+
+function hideAliceSpinner() {
+  const loadingDiv = document.querySelector(".loaderDiv");
+  loadingDiv.style.display = "none";
+}
+
 function gotoListeningState() {
   const micListening = document.querySelector(".mic .listening");
   const micReady = document.querySelector(".mic .ready");
@@ -56,6 +66,69 @@ function addError(text) {
   footer.style.display = "none";
 }
 
+function ajax(options) {
+	return new Promise(function(resolve, reject) {
+	   $.ajax(options).done(resolve).fail(reject);
+	});
+}
+
+function triggerInitialConversation(){
+  showAliceSpinner();
+  displayCurrentTime();
+  //Now we’ve established that the browser is Chrome with proper speech API-s.
+
+  // api.ai client
+  //const apiClient = new ApiAi.ApiAiClient({accessToken: '13f191c473134f38a31d4232ca319f9b'});
+
+  // Initial feedback message.
+  //addBotItem("Hi! I’m Alice. Logging you in ...");
+  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
+  
+  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101 / abcd"}});
+
+  initialContent = true;
+  promise
+      .then(handleResponse)
+      .catch(handleError);
+}
+
+function handleResponse(serverResponse) {
+    // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
+    var timer = window.setTimeout(function() { startListening(); }, 5000);
+    var jsonServerResponse = JSON.parse(serverResponse);
+    
+    const speech = (jsonServerResponse["result"]["fulfillment"]["speech"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["speech"];
+    const displayText = (jsonServerResponse["result"]["fulfillment"]["displayText"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["displayText"];
+    
+    var msg = new SpeechSynthesisUtterance(speech);
+    var voices = window.speechSynthesis.getVoices();
+    msg.default = false;
+    msg.voice = voices.filter(function(voice) { return voice.name == 'Google UK English Female'; })[0];
+    msg.lang = 'en-GB';
+
+    addBotItem(displayText);
+    if(initialContent!== undefined && !initialContent){
+  	  runAliceCommand(displayText);
+    }
+    /*ga('send', 'event', 'Message', 'add', 'bot');*/
+    msg.addEventListener("end", function(ev) {
+      window.clearTimeout(timer);
+      startListening();
+    });
+    msg.addEventListener("error", function(ev) {
+      window.clearTimeout(timer);
+      startListening();
+    });
+
+    
+    window.speechSynthesis.speak(msg);
+    hideAliceSpinner();
+}
+
+function handleError(serverError) {
+	  console.log("Error from api.ai server: ", serverError);
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
   // test for relevant API-s
@@ -78,51 +151,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
     addError("Your browser cannot record voice. This demo won’t work.");
     return;
   }
+  
+
+  const startButton = document.querySelector("#start");
+  startButton.addEventListener("click", function(ev) {
+    //ga('send', 'event', 'Button', 'click');
+    startListening();
+    ev.preventDefault();
+  });
+  
+  const stopButton = document.querySelector("#stop");
+  stopButton.addEventListener("click", function(ev) {
+    stopListening();
+    ev.preventDefault();
+  });
+});
 
   var initialContent = true;
-  function handleResponse(serverResponse) {
-
-      // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
-      var timer = window.setTimeout(function() { startListening(); }, 5000);
-      var jsonServerResponse = JSON.parse(serverResponse);
+  var listeningInitiated = false;
       
-      const speech = (jsonServerResponse["result"]["fulfillment"]["speech"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["speech"];
-      const displayText = (jsonServerResponse["result"]["fulfillment"]["displayText"] === undefined) ? jsonServerResponse["result"]["fulfillment"]["messages"][0]["speech"][0] : jsonServerResponse["result"]["fulfillment"]["displayText"];
-      
-      var msg = new SpeechSynthesisUtterance(speech);
-      var voices = window.speechSynthesis.getVoices();
-      msg.default = false;
-      msg.voice = voices.filter(function(voice) { return voice.name == 'Google UK English Female'; })[0];
-      msg.lang = 'en-GB';
-
-      addBotItem(displayText);
-      if(initialContent!== undefined && !initialContent){
-    	  runAliceCommand(displayText);
-      }
-      /*ga('send', 'event', 'Message', 'add', 'bot');*/
-      msg.addEventListener("end", function(ev) {
-        window.clearTimeout(timer);
-        startListening();
-      });
-      msg.addEventListener("error", function(ev) {
-        window.clearTimeout(timer);
-        startListening();
-      });
-
-      
-      window.speechSynthesis.speak(msg);
-    }
-    function handleError(serverError) {
-      console.log("Error from api.ai server: ", serverError);
-    }
-    
-  function ajax(options) {
-	return new Promise(function(resolve, reject) {
-	   $.ajax(options).done(resolve).fail(reject);
-	});
-  }
-  
-  const timeIndicatorContent = document.querySelector(".time-indicator-content").innerHTML;
+  const timeIndicatorContent = (document.querySelector(".time-indicator-content") !== undefined
+		  	&& document.querySelector(".time-indicator-content") !== null)?
+		  document.querySelector(".time-indicator-content").innerHTML: undefined;
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
   recognition.continuous = false;
@@ -140,6 +190,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (ev.results[i].isFinal) {
     	recognizedText += ev.results[i][0].transcript;
     	addUserItem(recognizedText);
+    	let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
+
+        if($(".time-indicator-content").text() === undefined || $(".time-indicator-content").text() === ""){
+        	initialContent = true;
+        } else{
+        	initialContent = false;
+        }
+        promise
+            .then(handleResponse)
+            .catch(handleError);
       } else {
         interim_transcript += ev.results[i][0].transcript;
       }
@@ -154,16 +214,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     /*ga('send', 'event', 'Message', 'add', 'user');*/
 
     //let promise = apiClient.textRequest(recognizedText);
-    let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": recognizedText}});
-
-    if($(".time-indicator-content").text() === undefined || $(".time-indicator-content").text() === ""){
-    	initialContent = true;
-    } else{
-    	initialContent = false;
-    }
-    promise
-        .then(handleResponse)
-        .catch(handleError);
     
   };
 
@@ -171,28 +221,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     console.log("Speech recognition error", ev);
   };
   recognition.onend = function() {
+	listeningInitiated = false;
     gotoReadyState();
   };
-  
-  if(timeIndicatorContent === undefined || timeIndicatorContent === ""){
-	  displayCurrentTime();
-	  //Now we’ve established that the browser is Chrome with proper speech API-s.
-	
-	  // api.ai client
-	  //const apiClient = new ApiAi.ApiAiClient({accessToken: '13f191c473134f38a31d4232ca319f9b'});
-	
-	  // Initial feedback message.
-	  //addBotItem("Hi! I’m Alice. Logging you in ...");
-	  // addBotItem("Hi! I’m Alice. Tap the microphone and start talking to me.");
+      
+  if(timeIndicatorContent !== undefined && timeIndicatorContent !== ""){
+	  //Open the existing Alice window and scroll to bottom
+	  $('#voice-icon').click();
+	  $('.app-content').scrollTop($('.app-content')[0].scrollHeight);
 	  
-	  let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": "Log in with 101 / abcd"}});
-	
-	  initialContent = true;
-	  promise
-	      .then(handleResponse)
-	      .catch(handleError);
-		  	  
-  } else{
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
 	  addBotItem('Your result is ready.');
@@ -200,36 +237,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   function startListening() {
     gotoListeningState();
-    recognition.start();
+    if(!listeningInitiated){
+    	recognition.start();
+    }
+    listeningInitiated = true;
   }
-
-  const startButton = document.querySelector("#start");
-  startButton.addEventListener("click", function(ev) {
-    //ga('send', 'event', 'Button', 'click');
-    startListening();
-    ev.preventDefault();
-  });
   
-  $("#transcriptButton").on("click", function(){
-	 var dummyText = $('#transcript').val();
-	 if(dummyText !== undefined && dummyText !== ''){
-		 addUserItem(dummyText);
-		 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
-		 $('#transcript').val('');
-		 
-		 initialContent = false;
-		    promise
-		        .then(handleResponse)
-		        .catch(handleError);
-  	 }
-  });
+  function stopListening() {
+	recognition.stop();
+	gotoReadyState(); 
+	listeningInitiated = false;
+  }
   
-
-  //Added for enter key event on input box
-  $("#transcript").keyup(function(event) {
-	    if (event.keyCode === 13) {
-	        $("#transcriptButton").click();
-	    }
+  $(document).ready(function(){
+	  $("#transcriptButton").on("click", function(){
+		 var dummyText = $('#transcript').val();
+		 if(dummyText !== undefined && dummyText !== ''){
+			 addUserItem(dummyText);
+			 let promise = ajax({ url: "/CaseWorkerPortal/ai" , data: {"query": dummyText}});
+			 $('#transcript').val('');
+			 
+			 initialContent = false;
+			    promise
+			        .then(handleResponse)
+			        .catch(handleError);
+	  	 }
+	  });
+	  
+	  //Added for enter key event on input box
+	  $("#transcript").keyup(function(event) {
+		    if (event.keyCode === 13) {
+		        $("#transcriptButton").click();
+		    }
+	  });
   });
   
   // Esc key handler - cancel listening if pressed
@@ -244,9 +284,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     
     if (isEscape) {
+    	listeningInitiated = false;
         recognition.abort();
     }
   });
 
 
-});
+//});
