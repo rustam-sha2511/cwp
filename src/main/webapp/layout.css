@@ -41,6 +41,12 @@ html {
   float: right;
   margin-top: -15px;
   margin-right: 10px;
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.app-header > h1 > span > i:hover, .app-header > h1 > span > i:focus{
+  opacity: 1.0;
 }
 
 .app-header > img {
@@ -180,6 +186,10 @@ html {
   }
 }
 
+.listening:hover {
+    cursor: pointer;
+}
+
 .mic .listening-1 {
   animation: listeningframes 0.6s 0s infinite;
 }
@@ -208,6 +218,7 @@ html {
     margin-top: 16px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    z-index: 1001;
   }
 
   .app-footer {
@@ -231,3 +242,30 @@ html {
    }
   .speech input {border: 0; width: 240px; display: inline-block; height: 30px; outline: none; padding: 5px;}
 }
+
+.loader {
+    border-top: 14px solid #113f7e;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 0.8s linear infinite;
+}
+
+.loaderDiv{
+	position: absolute;
+    z-index: 1000;
+    align-items: center;
+    padding-top: 50%;
+    padding-left: 30%;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
