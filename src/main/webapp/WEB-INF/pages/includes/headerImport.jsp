@@ -46,4 +46,4 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/normalize.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/layout.css" />
 <script type="text/javascript" src="${pageContext.request.contextPath}/app.js"></script>
-<script src='${pageContext.request.contextPath}/js/generic.js'></script>
+<script type="text/javascript" src='${pageContext.request.contextPath}/js/generic.js'></script>

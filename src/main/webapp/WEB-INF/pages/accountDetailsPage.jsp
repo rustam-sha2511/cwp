@@ -6,25 +6,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
+<%@include file="includes/headerImport.jsp" %>
 <head>
 <title>Case Worker Portal - My Account Details</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/animate.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/font-awesome.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/default.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/message.css"
-	media="screen" type="text/css" />
-
-<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -192,5 +176,6 @@
 		</div>
 	</div>
 
+	<%@include file="includes/aliceImport.jsp" %>
 </body>
 </html>
