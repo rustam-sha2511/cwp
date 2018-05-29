@@ -169,15 +169,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const timeIndicatorContent = (document.querySelector(".time-indicator-content") !== undefined
 		  	&& document.querySelector(".time-indicator-content") !== null)?
 		  document.querySelector(".time-indicator-content").innerHTML: undefined;		  
-  if(timeIndicatorContent !== undefined && timeIndicatorContent !== ""){
-	  //Open the existing Alice window and scroll to bottom
-	  $('#voice-icon').click();
-	  $('.app-content').scrollTop($('.app-content')[0].scrollHeight);
-	  
+  if(timeIndicatorContent !== undefined && timeIndicatorContent !== ""){	  
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
 	  addBotItem('Your result is ready.');
 	  window.speechSynthesis.speak('Your result is ready.');
+	  
+	  //Open the existing Alice window and scroll to bottom
+	  $(document).ready(function(){
+		  $('#voice-icon').click();
+		  $('.app-content').scrollTop($('.app-content')[0].scrollHeight);
+	  });	  
   }
 });
 
