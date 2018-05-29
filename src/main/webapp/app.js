@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
 	  addBotItem('Your result is ready.');
+	  window.speechSynthesis.speak('Your result is ready.');
   }
 });
 
