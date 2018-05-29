@@ -165,14 +165,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
     stopListening();
     ev.preventDefault();
   });
+  
+  const timeIndicatorContent = (document.querySelector(".time-indicator-content") !== undefined
+		  	&& document.querySelector(".time-indicator-content") !== null)?
+		  document.querySelector(".time-indicator-content").innerHTML: undefined;		  
+  if(timeIndicatorContent !== undefined && timeIndicatorContent !== ""){
+	  //Open the existing Alice window and scroll to bottom
+	  $('#voice-icon').click();
+	  $('.app-content').scrollTop($('.app-content')[0].scrollHeight);
+	  
+	  var result = runAliceFilterCommand($('.item-container:last .item').text());
+	  console.log('result is: '+result);
+	  addBotItem('Your result is ready.');
+  }
 });
 
   var initialContent = true;
   var listeningInitiated = false;
-      
-  const timeIndicatorContent = (document.querySelector(".time-indicator-content") !== undefined
-		  	&& document.querySelector(".time-indicator-content") !== null)?
-		  document.querySelector(".time-indicator-content").innerHTML: undefined;
+        
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
   recognition.continuous = false;
@@ -225,16 +235,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     gotoReadyState();
   };
       
-  if(timeIndicatorContent !== undefined && timeIndicatorContent !== ""){
-	  //Open the existing Alice window and scroll to bottom
-	  $('#voice-icon').click();
-	  $('.app-content').scrollTop($('.app-content')[0].scrollHeight);
-	  
-	  var result = runAliceFilterCommand($('.item-container:last .item').text());
-	  console.log('result is: '+result);
-	  addBotItem('Your result is ready.');
-  }
-  
   function startListening() {
     gotoListeningState();
     if(!listeningInitiated){
