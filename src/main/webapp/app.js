@@ -92,6 +92,16 @@ function triggerInitialConversation(){
       .catch(handleError);
 }
 
+function speakResponse(speechText) {
+    var msg = new SpeechSynthesisUtterance(speechText);
+    var voices = window.speechSynthesis.getVoices();
+    msg.default = false;
+    msg.voice = voices.filter(function(voice) { return voice.name == 'Google UK English Female'; })[0];
+    msg.lang = 'en-GB';
+    
+    window.speechSynthesis.speak(msg);
+}
+
 function handleResponse(serverResponse) {
     // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
     var timer = window.setTimeout(function() { startListening(); }, 5000);
@@ -173,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	  var result = runAliceFilterCommand($('.item-container:last .item').text());
 	  console.log('result is: '+result);
 	  addBotItem('Your result is ready.');
-	  window.speechSynthesis.speak('Your result is ready.');
+	  speakResponse('Your result is ready.');
 	  
 	  //Open the existing Alice window and scroll to bottom
 	  $(document).ready(function(){
