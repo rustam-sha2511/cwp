@@ -137,7 +137,11 @@ public class DialogFlowConversationServiceImpl implements DialogFlowConversation
 
 		if (null != cwCase && null != cwCase.getStatus()) {
 			if (cwCase.getStatus().equalsIgnoreCase(CaseStatus.PENDING_REVIEW.value())) {
-				cwCase.setStatus(updatedStatus);
+				if(updatedStatus.equalsIgnoreCase(CaseStatus.APPROVED.value())){
+					cwCase.setStatus(CaseStatus.APPROVED.value());
+				} else if(updatedStatus.equalsIgnoreCase(CaseStatus.DENIED.value())){
+					cwCase.setStatus(CaseStatus.DENIED.value());
+				}				
 				responseOut = "The status of the case is changed to " + updatedStatus;
 			} else if (cwCase.getStatus().equalsIgnoreCase(CaseStatus.APPROVED.value())
 					|| cwCase.getStatus().equalsIgnoreCase(CaseStatus.DENIED.value())) {
