@@ -247,6 +247,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			} else if(intentName.equalsIgnoreCase("UpdateCaseStatusIntent")){
 				//Business Case: 10
 				CwCases cwCase = cwpServices.getCaseByCaseId(caseId);
+				System.out.println("Matched case is: "+cwCase.toString());
 				String responseOut = null;
 				if(!newStatus.equalsIgnoreCase(CaseStatus.APPROVED.value())
 						&& !newStatus.equalsIgnoreCase(CaseStatus.DENIED.value())) {
