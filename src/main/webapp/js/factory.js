@@ -12,6 +12,8 @@ function Factory() {
             factoryObject = new ViewAppointmentsFilter();
         } else if (type === "LOGOUT_SCENE") {
             factoryObject = new LogoutSceneFilter();
+        } else if (type === "UPDATE_CASE_STATUS_SCENE") {
+            factoryObject = new UpdateCaseStatusFilter();
         }
  
         factoryObject.type = type;
@@ -55,6 +57,29 @@ function fetchChatBotHistory(){
 	});
 	return currentConvObj;
 }
+
+var UpdateCaseStatusFilter = function () {
+	return {
+        execute: function (actingObject) { 
+        	console.log('Executing for update case status filter logic');
+			var currentConvObj = fetchChatBotHistory();
+			$.ajax({
+				method: "POST",
+				url: "/CaseWorkerPortal/saveAliceConversation",
+				data: JSON.stringify(currentConvObj),
+				contentType:"application/json"
+			})
+			.done(function( msg ) {
+				console.log("success when alice conversation object created");
+				window.location.href = '/CaseWorkerPortal/cwDashboard';
+			});
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for update case status logic');
+			return true;
+		}
+    }
+};
 
 var CustomCaseFilter = function () {
 	return {
