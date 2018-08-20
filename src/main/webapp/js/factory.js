@@ -14,6 +14,8 @@ function Factory() {
             factoryObject = new LogoutSceneFilter();
         } else if (type === "UPDATE_CASE_STATUS_SCENE") {
             factoryObject = new UpdateCaseStatusFilter();
+        } else if (type === "ANNON_SEARCH_SCENE") {
+            factoryObject = new AnnonSearchFilter();
         }
  
         factoryObject.type = type;
@@ -192,6 +194,32 @@ var LogoutSceneFilter = function () {
         execute: function (actingObject) { 
 			console.log('Executing for logout logic');
 			window.location.href = '/CaseWorkerPortal/logout';
+		}
+    }
+};
+
+var AnnonSearchFilter = function () {
+	return {
+        execute: function (actingObject) { 
+			console.log('Executing for annon search filter logic');
+			var currentConvObj = fetchChatBotHistory();
+			$.ajax({
+				method: "POST",
+				url: "/CaseWorkerPortal/saveAliceConversation",
+				data: JSON.stringify(currentConvObj),
+				contentType:"application/json"
+			})
+			.done(function( msg ) {
+				//alert('success when alice conversation object created');
+				console.log("success when alice conversation object created");
+				window.location.href = '/Annon_ViewIndividualPlans?request_locale=en';
+			});
+		},
+		filter: function (actingObject) { 
+			console.log('Executing filter for annon search filter logic');
+			$('#inputTabularData_filter input[type="search"]').val(actingObject).triggerHandler('keyup');
+			
+			return true;
 		}
     }
 };

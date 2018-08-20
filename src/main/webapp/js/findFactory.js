@@ -33,6 +33,7 @@ var findFactory = (function () {
 			var viewAppointmentSet = ['view all my appointments for today'];
 			var logoutSet = ['It was great working with you. See you next time!'];
 			var caseStatusUpdateSet = ['The status of the case is changed to '];
+			var annonSearchFilterSet = ['Searching plans for '];
 			var currentExecutionObj = "";
 			if (true == (function(){var resultObj = compareObj.compare(msg, customCaseFilterSet);
 					currentExecutionObj = resultObj.resultValue; return resultObj.result})()) {
@@ -64,7 +65,12 @@ var findFactory = (function () {
 				factory.objName = "UPDATE_CASE_STATUS_SCENE";
 				factory.objValue = currentExecutionObj;
 				return factory;
-			}		
+			} else if (true == (function(){var resultObj = compareObj.compare(msg, annonSearchFilterSet);
+							currentExecutionObj = resultObj.resultValue; return resultObj.result})()) {
+				factory.objName = "ANNON_SEARCH_SCENE";
+				factory.objValue = currentExecutionObj;
+				return factory;
+			}
 		}
     }
 })();

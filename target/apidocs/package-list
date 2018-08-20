@@ -1,0 +1,15 @@
+com.cwp.alice.authentication
+com.cwp.alice.config
+com.cwp.alice.constants
+com.cwp.alice.controller
+com.cwp.alice.dao
+com.cwp.alice.dao.impl
+com.cwp.alice.exception
+com.cwp.alice.form
+com.cwp.alice.mapper
+com.cwp.alice.model
+com.cwp.alice.rs.request.dto
+com.cwp.alice.rs.response.dto
+com.cwp.alice.service
+com.cwp.alice.service.impl
+com.cwp.alice.util
