@@ -1,5 +1,7 @@
 package com.cwp.alice.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
 
 import com.cwp.alice.constants.GenericConstants;
 import com.cwp.alice.dto.AliceConversationDetails;
@@ -28,8 +32,9 @@ import com.cwp.alice.service.CaseWorkerPortalService;
 import com.cwp.alice.service.DialogFlowConversationService;
 import com.google.gson.Gson;
 
-import ai.api.AIServiceException;
 import ai.api.model.AIResponse;
+import ai.api.model.Fulfillment;
+import ai.api.model.Result;
 
 @RestController
 public class DialogFlowConversationController extends AIServiceServlet{
@@ -80,6 +85,16 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			String monthlyIncome = null;
 			String childrenCount = null;
 			String adultCount = null;
+			
+			//Added for ALICE V2.0
+			String zipcode = null;
+			String county = null;
+			String dob = null;
+			String sex = null;
+			String tobaccoUsage = null;
+			String householdIncome = null;
+			String frequency = null;
+			
 			for(Context contextObj: requestRootObject.getResult().getContexts()) {
 				if(contextObj.getName().equalsIgnoreCase("usercontext")) {
 					userId = contextObj.getParameters().getUser_id();
@@ -90,6 +105,14 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					adultCount = contextObj.getParameters().getAdult_count();
 					caseId = contextObj.getParameters().getCase_id();
 					newStatus = contextObj.getParameters().getNew_status();
+					//Added for ALICE V2.0
+					zipcode = contextObj.getParameters().getZipcode();
+					county = contextObj.getParameters().getCounty();
+					dob = contextObj.getParameters().getDob();
+					sex = contextObj.getParameters().getSex();
+					tobaccoUsage = contextObj.getParameters().getTobaccoUsage();
+					householdIncome = contextObj.getParameters().getHouseholdIncome();
+					frequency = contextObj.getParameters().getFrequency();
 					break;
 				}
 			}
@@ -265,6 +288,54 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				
 				responseRootObject.setSpeech(responseOut);
 				responseRootObject.setDisplayText(responseOut);
+			} else if(intentName.equalsIgnoreCase("AnnonPlanSearchIntent")){
+				//Business Case: 11
+				System.out.println(">>> Matched Intent UpdateCaseStatusIntent");
+				System.out.println("Zipcode is : " + zipcode);
+				//TODO: To be changed to dynamic value
+				String speechText = "Filtering out plans for 2 household members with household income as $200 residing in CLARK.";
+				String displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
+						"IN_PSex:MaleIN_PTobacco Usage:NoIN_PHousehold Income:$200IN_PFrequency:AnnualyHH_STARTDOB:01/01/2001"+
+						"IN_PSex:FemaleIN_PTobacco Usage:NoIN_PRelationship:SpouseHH_CHDOB:01/01/2001IN_PSex:Female"+
+						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";
+				responseRootObject.setSpeech(speechText);
+				responseRootObject.setDisplayText(displayText);
+			} else if(intentName.equalsIgnoreCase("Default Fallback Intent")){
+				//Business Case: 12
+				System.out.println(">>> Matched Intent Default Fallback Intent");
+				String inputText = requestRootObject.getResult().getResolvedQuery();
+				System.out.println(">>> Fallback Intent text is : " + inputText);
+				String speechText = "Can you say that again?";
+				String displayText = "Can you say that again?";
+				RestTemplate restTemplate = new RestTemplate();
+				List<LinkedHashMap> responses = 
+						restTemplate.getForObject("https://faq.wahealthplanfinder.org/search/faq/en/"+inputText+"?_format=json", List.class);
+				StringBuffer displayTextToBeCreated = new StringBuffer();
+				StringBuffer speechTextToBeCreated = new StringBuffer();
+				if(responses.size()>0) {
+					displayTextToBeCreated.append("Based on your input, here are the suggestions for you. "
+							+ "Tap on the card or speak 'Select option ' along with number to view the details.");
+					speechTextToBeCreated.append("Based on your input, here are the suggestions for you. "
+							+ "Tap on the card or speak 'Select option ' along with number to view the details.");
+					displayTextToBeCreated.append("FAQ_START");
+					int responseCount = 1;
+					for(LinkedHashMap resp: responses) {
+						System.out.println("Valid response is : "+resp.get("title"));
+						displayTextToBeCreated.append(resp.get("title"));
+						speechTextToBeCreated.append("Select option " + responseCount + " for " + resp.get("title") + ".");
+						displayTextToBeCreated.append("FAQ_BREAK");
+						displayTextToBeCreated.append(resp.get("link"));
+						displayTextToBeCreated.append("FAQ_END");
+						responseCount++;
+					}
+					System.out.println(">>> Display text is : " + displayTextToBeCreated);
+					System.out.println(">>> Speech text is : " + speechTextToBeCreated);
+					displayText = displayTextToBeCreated.toString();
+					speechText = speechTextToBeCreated.toString();
+				}
+				
+				responseRootObject.setSpeech(speechText);
+				responseRootObject.setDisplayText(displayText);
 			}
 						
 			
@@ -292,7 +363,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		//ResponseRootObject responseRootObject = new ResponseRootObject();
 		AIResponse aiResponse = new AIResponse();
 		String response = "";
-		try {
+		/*try {
 			//System.out.println("Val is: "+request.getParameter(DialogFlowConversationController.PARAM_API_AI_KEY));
 			String secretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
 			System.out.println("Alice Secret key is : "+secretKey);
@@ -304,8 +375,61 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		} catch (AIServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}*/
+		String requestValue = null;
+		String speechText = "I didn't get that. Could you please repeat that for me?";
+		String displayText = "I didn't get that. Could you please repeat that for me?";
+		if(null != request.getParameter("query")) {
+			requestValue = request.getParameter("query");
 		}
 		
+		System.out.println("Request Value is : " + requestValue);
+		if(null != requestValue) {
+			if(requestValue.equalsIgnoreCase("Log in with 101 / abcd")) {
+				speechText = "Hi! This is Alice. How may I help you?";
+				displayText = "Hi! This is Alice. How may I help you?";
+			} else if(requestValue.equalsIgnoreCase("Search for a plan")){
+				speechText = "Filtering out plans for 2 household members with household income as $200 residing in CLARK.";
+				displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
+						"IN_PSex:MaleIN_PTobacco Usage:NoIN_PHousehold Income:$200IN_PFrequency:AnnualyHH_STARTDOB:01/01/2001"+
+						"IN_PSex:FemaleIN_PTobacco Usage:NoIN_PRelationship:SpouseHH_CHDOB:01/01/2001IN_PSex:Female"+
+						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";
+			} else {
+				RestTemplate restTemplate = new RestTemplate();
+				String encoded = "";
+				try {
+					encoded = UriUtils.encode(requestValue, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				List<LinkedHashMap> responses = 
+						restTemplate.getForObject("https://faq.wahealthplanfinder.org/search/faq/en/"+encoded+"?_format=json", List.class);
+				StringBuffer speechTextToBeCreated = new StringBuffer();
+				if(responses.size()>0) {
+					speechTextToBeCreated.append("Based on your input, here are the suggestions for you. Tap on the card to view the deatils.");
+					speechTextToBeCreated.append("FAQ_START");
+					for(LinkedHashMap resp: responses) {
+						System.out.println("Valid response is : "+resp.get("title"));
+						speechTextToBeCreated.append(resp.get("title"));
+						speechTextToBeCreated.append("FAQ_BREAK");
+						speechTextToBeCreated.append(resp.get("link"));
+						speechTextToBeCreated.append("FAQ_END");
+					}
+					displayText = speechTextToBeCreated.toString();
+				}				
+			}
+		}
+		
+		Result result = new Result();
+		Fulfillment fulfillment = new Fulfillment();
+		fulfillment.setSpeech(speechText);
+		fulfillment.setDisplayText(displayText);
+		result.setFulfillment(fulfillment);
+		aiResponse.setResult(result);
+		
+		Gson gson = new Gson();
+		response = gson.toJson(aiResponse);
 	    return response;
 	}
 	

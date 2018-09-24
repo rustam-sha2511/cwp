@@ -10,6 +10,15 @@ public class Parameters2 {
 	private String children_count;
 	private String monthly_income; 
 	
+	//Added for ALICE v2.0
+	private String zipcode;
+	private String county;
+	private String dob;
+	private String sex;
+	private String tobaccoUsage;
+	private String householdIncome;
+	private String frequency;
+	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -58,4 +67,47 @@ public class Parameters2 {
 	public void setNew_status(String new_status) {
 		this.new_status = new_status;
 	}
+	public String getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	public String getCounty() {
+		return county;
+	}
+	public void setCounty(String county) {
+		this.county = county;
+	}
+	public String getDob() {
+		return dob;
+	}
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getTobaccoUsage() {
+		return tobaccoUsage;
+	}
+	public void setTobaccoUsage(String tobaccoUsage) {
+		this.tobaccoUsage = tobaccoUsage;
+	}
+	public String getHouseholdIncome() {
+		return householdIncome;
+	}
+	public void setHouseholdIncome(String householdIncome) {
+		this.householdIncome = householdIncome;
+	}
+	public String getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+	
 }
