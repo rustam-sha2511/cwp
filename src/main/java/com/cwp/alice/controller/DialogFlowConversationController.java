@@ -126,7 +126,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			System.out.println("Request Root Object Session ID is :"+requestRootObject.getSessionId());
 			
 			//Check for fallback intent
-			if(null == cwUsers || null == cwUsers.getSessionId() || null == requestRootObject.getSessionId() ||
+			/*if(null == cwUsers || null == cwUsers.getSessionId() || null == requestRootObject.getSessionId() ||
 					!cwUsers.getSessionId().equalsIgnoreCase(requestRootObject.getSessionId())) {
 				responseRootObject.setSpeech("You are not authorized to interact with Alice. Please contact Administrator.");
 				responseRootObject.setDisplayText("You are not authorized to interact with Alice. Please contact Administrator.");
@@ -134,7 +134,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				requestRootObject.getResult().getMetadata().setIntentName("Default Fallback Intent");
 				responseRootObject.setSource("cws.openshift.com");
 				return responseRootObject;
-			}
+			}*/
 			
 			//Business Case: 1
 			if(intentName.equalsIgnoreCase("UserCaseSearchIntent")) {
