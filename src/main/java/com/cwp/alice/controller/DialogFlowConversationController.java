@@ -388,6 +388,11 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			if(requestValue.equalsIgnoreCase("Log in with 101 / abcd")) {
 				speechText = "Hi! This is Alice. How may I help you?";
 				displayText = "Hi! This is Alice. How may I help you?";
+			} else if(requestValue.equalsIgnoreCase("Search for a health plan")){
+				speechText = "We will require some information to help you find a suitable plan for you and your family. "
+						+ "Can you please help us with your zipcode?";
+				displayText = "We will require some information to help you find a suitable plan for you and your family. "
+						+ "Can you please help us with your zipcode?";
 			} else if(requestValue.equalsIgnoreCase("Search for a plan")){
 				speechText = "Filtering out plans for 2 household members with household income as $200 residing in CLARK.";
 				displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
