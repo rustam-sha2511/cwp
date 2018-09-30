@@ -291,6 +291,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				//Business Case: 11
 				System.out.println(">>> Matched Intent AnnonPlanSearchIntent");
 				System.out.println("Zipcode is : " + zipcode);
+				System.out.println("Toba is : " + tobaccoUsage);
+				
 				//TODO: To be changed to dynamic value
 				String speechText = "Added member successfully. Do you want to add new household member?";
 				/*String displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
@@ -299,7 +301,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";*/
 				String displayText = "Added member with details:IN_STARTZipCode:"+zipcode+"IN_PCounty:"+county+"IN_PDOB:"+dob+
 						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PHousehold Income:$"+householdIncome+"IN_PFrequency:"+frequency+
-						"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
+						"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
 				System.out.println("Display Text is: " + displayText);
 				responseRootObject.setDisplayText(displayText);
