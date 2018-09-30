@@ -1,6 +1,5 @@
 package com.cwp.alice.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriUtils;
 
 import com.cwp.alice.constants.GenericConstants;
 import com.cwp.alice.dto.AliceConversationDetails;
@@ -32,9 +30,8 @@ import com.cwp.alice.service.CaseWorkerPortalService;
 import com.cwp.alice.service.DialogFlowConversationService;
 import com.google.gson.Gson;
 
+import ai.api.AIServiceException;
 import ai.api.model.AIResponse;
-import ai.api.model.Fulfillment;
-import ai.api.model.Result;
 
 @RestController
 public class DialogFlowConversationController extends AIServiceServlet{
@@ -94,6 +91,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			String tobaccoUsage = null;
 			String householdIncome = null;
 			String frequency = null;
+			String relationship = null;
 			
 			for(Context contextObj: requestRootObject.getResult().getContexts()) {
 				if(contextObj.getName().equalsIgnoreCase("usercontext")) {
@@ -113,6 +111,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 					tobaccoUsage = contextObj.getParameters().getTobaccoUsage();
 					householdIncome = contextObj.getParameters().getHouseholdIncome();
 					frequency = contextObj.getParameters().getFrequency();
+					relationship = contextObj.getParameters().getRelationship();
 					break;
 				}
 			}
@@ -290,14 +289,31 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				responseRootObject.setDisplayText(responseOut);
 			} else if(intentName.equalsIgnoreCase("AnnonPlanSearchIntent")){
 				//Business Case: 11
-				System.out.println(">>> Matched Intent UpdateCaseStatusIntent");
+				System.out.println(">>> Matched Intent AnnonPlanSearchIntent");
 				System.out.println("Zipcode is : " + zipcode);
 				//TODO: To be changed to dynamic value
-				String speechText = "Filtering out plans for 2 household members with household income as $200 residing in CLARK.";
-				String displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
+				String speechText = "Added member successfully. Do you want to add new household member?";
+				/*String displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
 						"IN_PSex:MaleIN_PTobacco Usage:NoIN_PHousehold Income:$200IN_PFrequency:AnnualyHH_STARTDOB:01/01/2001"+
 						"IN_PSex:FemaleIN_PTobacco Usage:NoIN_PRelationship:SpouseHH_CHDOB:01/01/2001IN_PSex:Female"+
-						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";
+						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";*/
+				String displayText = "Added member with details:IN_STARTZipCode:"+zipcode+"IN_PCounty:"+county+"IN_PDOB:"+dob+
+						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PHousehold Income:$"+householdIncome+"IN_PFrequency:"+frequency+
+						"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
+				responseRootObject.setSpeech(speechText);
+				responseRootObject.setDisplayText(displayText);
+			} else if(intentName.equalsIgnoreCase("AnnonPlanSearchIntent - yes")){
+				//Business Case: 11
+				System.out.println(">>> Matched Intent AnnonPlanSearchIntent - yes");
+				//TODO: To be changed to dynamic value
+				String speechText = "Household member added with date of birth as " + dob +". Do you want to add another household member?";
+				/*String displayText = "Filtering out plans for below details:IN_STARTZipCode:98002IN_PCounty:KINGIN_PDOB:09/09/1991"+
+						"IN_PSex:MaleIN_PTobacco Usage:NoIN_PHousehold Income:$200IN_PFrequency:AnnualyHH_STARTDOB:01/01/2001"+
+						"IN_PSex:FemaleIN_PTobacco Usage:NoIN_PRelationship:SpouseHH_CHDOB:01/01/2001IN_PSex:Female"+
+						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";*/
+				String displayText = "Added member with details:IN_STARTZipCode:"+null+"IN_PCounty:"+null+"IN_PDOB:"+dob+
+						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PHousehold Income:$"+null+"IN_PFrequency:"+null+
+						"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
 				responseRootObject.setDisplayText(displayText);
 			} else if(intentName.equalsIgnoreCase("Default Fallback Intent")){
@@ -363,7 +379,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		//ResponseRootObject responseRootObject = new ResponseRootObject();
 		AIResponse aiResponse = new AIResponse();
 		String response = "";
-		/*try {
+		try {
 			//System.out.println("Val is: "+request.getParameter(DialogFlowConversationController.PARAM_API_AI_KEY));
 			String secretKey = String.valueOf(session.getAttribute("aliceSecretKey"));
 			System.out.println("Alice Secret key is : "+secretKey);
@@ -371,12 +387,12 @@ public class DialogFlowConversationController extends AIServiceServlet{
 			Gson gson = new Gson();
 			response = gson.toJson(aiResponse);
 			//response = aiResponse.getResult().getFulfillment().getSpeech();
-			//System.out.println("Returning Speech "+response);
+			System.out.println("Returning Speech "+response);
 		} catch (AIServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		String requestValue = null;
+		}
+		/*String requestValue = null;
 		String speechText = "I didn't get that. Could you please repeat that for me?";
 		String displayText = "I didn't get that. Could you please repeat that for me?";
 		if(null != request.getParameter("query")) {
@@ -434,7 +450,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 		aiResponse.setResult(result);
 		
 		Gson gson = new Gson();
-		response = gson.toJson(aiResponse);
+		response = gson.toJson(aiResponse);*/
 	    return response;
 	}
 	
