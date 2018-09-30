@@ -18,6 +18,7 @@ public class Parameters2 {
 	private String tobaccoUsage;
 	private String householdIncome;
 	private String frequency;
+	private String relationship;
 	
 	public String getUser_id() {
 		return user_id;
@@ -108,6 +109,12 @@ public class Parameters2 {
 	}
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
+	}
+	public String getRelationship() {
+		return relationship;
+	}
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
 	}
 	
 }
