@@ -301,6 +301,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PHousehold Income:$"+householdIncome+"IN_PFrequency:"+frequency+
 						"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
+				System.out.println("Display Text is: " + displayText);
 				responseRootObject.setDisplayText(displayText);
 			} else if(intentName.equalsIgnoreCase("AnnonPlanSearchIntent - yes")){
 				//Business Case: 11
@@ -314,6 +315,7 @@ public class DialogFlowConversationController extends AIServiceServlet{
 				String displayText = "Added member with details:IN_STARTDOB:"+dob+
 						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
+				System.out.println("Display Text is: " + displayText);
 				responseRootObject.setDisplayText(displayText);
 			} else if(intentName.equalsIgnoreCase("Default Fallback Intent")){
 				//Business Case: 12
