@@ -311,9 +311,8 @@ public class DialogFlowConversationController extends AIServiceServlet{
 						"IN_PSex:MaleIN_PTobacco Usage:NoIN_PHousehold Income:$200IN_PFrequency:AnnualyHH_STARTDOB:01/01/2001"+
 						"IN_PSex:FemaleIN_PTobacco Usage:NoIN_PRelationship:SpouseHH_CHDOB:01/01/2001IN_PSex:Female"+
 						"IN_PTobacco Usage:NoIN_PRelationship:Spouse";*/
-				String displayText = "Added member with details:IN_STARTZipCode:"+null+"IN_PCounty:"+null+"IN_PDOB:"+dob+
-						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PHousehold Income:$"+null+"IN_PFrequency:"+null+
-						"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
+				String displayText = "Added member with details:IN_STARTDOB:"+dob+
+						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
 				responseRootObject.setDisplayText(displayText);
 			} else if(intentName.equalsIgnoreCase("Default Fallback Intent")){
