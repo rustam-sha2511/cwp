@@ -1,5 +1,6 @@
 package com.cwp.alice.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -318,6 +319,41 @@ public class DialogFlowConversationController extends AIServiceServlet{
 						"IN_PSex:"+sex+"IN_PTobacco Usage:"+tobaccoUsage+"IN_PRelationship:"+relationship+"IN_ENDDo you want to add new household member?";
 				responseRootObject.setSpeech(speechText);
 				System.out.println("Display Text is: " + displayText);
+				responseRootObject.setDisplayText(displayText);
+			} else if(intentName.equalsIgnoreCase("AnnonPlanFilterIntent - Estimated Premium")){
+				//Business Case: 11
+				System.out.println(">>> Matched Intent AnnonPlanFilterIntent - Estimated Premium");
+				String speechText = "Can you say that again?";
+				String displayText = "Can you say that again?";
+				StringBuffer displayTextToBeCreated = new StringBuffer();
+				StringBuffer speechTextToBeCreated = new StringBuffer();
+				List<String> options = new ArrayList<>();
+				options.add("$200 - $214");
+				options.add("$214 - $228");
+				options.add("$228 - $242");
+				options.add("$242 - $256");
+				options.add("$256 - $271");
+				if(options.size()>0) {
+					displayTextToBeCreated.append("Sure. Please help us with the range of estimated premium. "
+							+ "Tap on the card or speak 'Filter by ' along with number to view the details.");
+					speechTextToBeCreated.append("Based on your input, here are the suggestions for you. "
+							+ "Tap on the card or speak 'Filter by ' along with number to view the details.");
+					displayTextToBeCreated.append("FT_START");
+					int responseCount = 1;
+					for(String resp: options) {
+						System.out.println("Valid response is : "+resp);
+						displayTextToBeCreated.append(resp);
+						speechTextToBeCreated.append("Select option " + responseCount + " for " + resp + ".");
+						displayTextToBeCreated.append("FT_BREAK");
+						responseCount++;
+					}
+					System.out.println(">>> Display text is : " + displayTextToBeCreated);
+					System.out.println(">>> Speech text is : " + speechTextToBeCreated);
+					displayText = displayTextToBeCreated.toString();
+					speechText = speechTextToBeCreated.toString();
+				}
+				
+				responseRootObject.setSpeech(speechText);
 				responseRootObject.setDisplayText(displayText);
 			} else if(intentName.equalsIgnoreCase("Default Fallback Intent")){
 				//Business Case: 12
